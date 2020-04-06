@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+
+namespace Tetris.Models
+{
+    public interface IBoardModel
+    {
+        int NumLines { get; }
+        int NumColumns { get; }
+        bool[,] Blocks { get; }
+    }
+
+    public interface IBoardView
+    {
+        Transform[,] Blocks { get; }
+    }
+
+    public interface IBoardFactory
+    {
+        IBoardView GetBoard(int numLines, int numColumns);
+    }
+}
