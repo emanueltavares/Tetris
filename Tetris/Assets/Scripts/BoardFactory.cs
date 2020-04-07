@@ -41,8 +41,8 @@ namespace Tetris.Factories
             {
                 for (int col = 0; col < numColumns; col++)
                 {
-                    blocks[line, col] = NoBlock;
-                    //blocks[line, col] = _sysRandom.Next(0, 8);
+                    //blocks[line, col] = NoBlock;
+                    blocks[line, col] = _sysRandom.Next(0, 8);
                 }
             }
 
