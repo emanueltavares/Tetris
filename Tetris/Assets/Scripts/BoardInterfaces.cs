@@ -6,7 +6,7 @@ namespace Tetris.Models
     {
         int NumLines { get; }
         int NumColumns { get; }
-        bool[,] Blocks { get; }
+        int[,] Blocks { get; }
     }
 
     public interface IBoardView
