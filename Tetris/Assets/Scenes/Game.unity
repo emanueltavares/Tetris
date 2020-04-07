@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff309538ac3de14bb7f7a96e808f034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _noBlockMat: {fileID: 2100000, guid: 2cdbc8e8dcb832e4293faafde862e990, type: 2}
   _lightBlueBlockMat: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
   _darkBlueBlockMat: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
   _orangeBlockMat: {fileID: 2100000, guid: e59918cc047cfe2468dabf4f8fecbeb5, type: 2}

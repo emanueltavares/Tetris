@@ -5,6 +5,7 @@ namespace Tetris.Factories
 {
     public class BoardFactory : MonoBehaviour, IBoardFactory
     {
+        private const int NoBlock = 0;
         private const int LightBlueBlock = 1;
         private const int DarkBlueBlock = 2;
         private const int OrangeBlock = 3;
@@ -14,6 +15,7 @@ namespace Tetris.Factories
         private const int RedBlock = 7;
 
         [Header("Tetrominos Colors")]
+        [SerializeField] private Material _noBlockMat;         // GREY is the color of the empty block
         [SerializeField] private Material _lightBlueBlockMat;  // LIGHT BLUE is the color of the I piece
         [SerializeField] private Material _darkBlueBlockMat;   // DARK BLUE is the color of the J piece
         [SerializeField] private Material _orangeBlockMat;     // ORANGE is the color of the L piece
@@ -40,6 +42,7 @@ namespace Tetris.Factories
             {
                 for (int col = 0; col < numColumns; col++)
                 {
+                    //blocks[line, col] = 0;
                     blocks[line, col] = _sysRandom.Next(0, 8);
                 }
             }
@@ -72,35 +75,28 @@ namespace Tetris.Factories
                     switch (blockType)
                     {
                         case LightBlueBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _lightBlueBlockMat;
                             break;
                         case DarkBlueBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _darkBlueBlockMat;
                             break;
                         case OrangeBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _orangeBlockMat;
                             break;
                         case YellowBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _yellowBlockMat;
                             break;
                         case GreenBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _greenBlockMat;
                             break;
                         case PurpleBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _purpleBlockMat;
                             break;
                         case RedBlock:
-                            blockInstance.gameObject.SetActive(true);
                             blockInstance.sharedMaterial = _redBlockMat;
                             break;
                         default:
-                            blockInstance.gameObject.SetActive(false);
+                            blockInstance.sharedMaterial = _noBlockMat;
                             break;
                     }
                 }
