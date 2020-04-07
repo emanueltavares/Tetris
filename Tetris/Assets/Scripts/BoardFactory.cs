@@ -26,8 +26,7 @@ namespace Tetris.Factories
 
         [Header("Tetrominos Settings")]
         [SerializeField] private Renderer _blockPrefab;
-        [SerializeField] private float _blockWidth = 1f;
-        [SerializeField] private float _blockHeight = 1f;
+        [SerializeField] private float _blockScale = 1f;
 
         private readonly System.Random _sysRandom = new System.Random();
 
@@ -42,15 +41,15 @@ namespace Tetris.Factories
             {
                 for (int col = 0; col < numColumns; col++)
                 {
-                    //blocks[line, col] = 0;
-                    blocks[line, col] = _sysRandom.Next(0, 8);
+                    blocks[line, col] = NoBlock;
+                    //blocks[line, col] = _sysRandom.Next(0, 8);
                 }
             }
 
             IBoardModel boardModel = builder.Build(blocks);
 
-            float halfBoardWidth = _blockWidth * (numColumns - 1) * 0.5f;
-            float halfBoardHeight = _blockHeight * (numLines - 1) * 0.5f;
+            float halfBoardWidth = _blockScale * (numColumns - 1) * 0.5f;
+            float halfBoardHeight = _blockScale * (numLines - 1) * 0.5f;
 
             // Create Board View from Model
             for (int line = 0; line < numLines; line++)
@@ -63,7 +62,7 @@ namespace Tetris.Factories
                     float blockX = Mathf.Lerp(-halfBoardWidth, halfBoardWidth, normalizedColumn);
                     float blockY = Mathf.Lerp(halfBoardHeight, -halfBoardHeight, normalizedLine);
                     Vector3 localPosition = new Vector3(blockX, blockY, 0);
-                    Vector3 localScale = new Vector3(_blockWidth, _blockHeight, 1f);
+                    Vector3 localScale = new Vector3(_blockScale, _blockScale, _blockScale);
 
                     // Create a transform
                     Renderer blockInstance = Instantiate(_blockPrefab, root);
@@ -74,6 +73,9 @@ namespace Tetris.Factories
                     int blockType = boardModel.Blocks[line, col];
                     switch (blockType)
                     {
+                        case NoBlock:
+                            blockInstance.sharedMaterial = _noBlockMat;
+                            break;
                         case LightBlueBlock:
                             blockInstance.sharedMaterial = _lightBlueBlockMat;
                             break;
@@ -94,9 +96,6 @@ namespace Tetris.Factories
                             break;
                         case RedBlock:
                             blockInstance.sharedMaterial = _redBlockMat;
-                            break;
-                        default:
-                            blockInstance.sharedMaterial = _noBlockMat;
                             break;
                     }
                 }

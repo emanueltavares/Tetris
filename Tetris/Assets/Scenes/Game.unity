@@ -135,7 +135,7 @@ GameObject:
   m_Layer: 0
   m_Name: Board Controller
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -162,7 +162,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138700972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -190,8 +190,7 @@ MonoBehaviour:
   _redBlockMat: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
-  _blockWidth: 0.425
-  _blockHeight: 0.425
+  _blockScale: 0.425
 --- !u!1001 &1776894032822266201
 PrefabInstance:
   m_ObjectHideFlags: 0
