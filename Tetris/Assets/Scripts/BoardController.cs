@@ -18,7 +18,7 @@ namespace Tetris.Controllers
 
         private void Create()
         {
-            IBoardView boardView = _boardFactory.GetBoard(_maxNumLines, _maxNumColumns);            
+            IBoardView boardView = _boardFactory.GetBoard(transform, _maxNumLines, _maxNumColumns);            
         }
     }
 }

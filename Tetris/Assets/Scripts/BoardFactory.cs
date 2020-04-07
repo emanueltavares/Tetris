@@ -5,7 +5,6 @@ namespace Tetris.Factories
 {
     public class BoardFactory : MonoBehaviour, IBoardFactory
     {
-        private const int NoBlock = 0;
         private const int LightBlueBlock = 1;
         private const int DarkBlueBlock = 2;
         private const int OrangeBlock = 3;
@@ -24,87 +23,89 @@ namespace Tetris.Factories
         [SerializeField] private Material _redBlockMat;        // RED is the color of the Z piece
 
         [Header("Tetrominos Settings")]
-        [SerializeField] private GameObject _blockPrefab;
+        [SerializeField] private Renderer _blockPrefab;
         [SerializeField] private float _blockWidth = 1f;
         [SerializeField] private float _blockHeight = 1f;
 
-        public IBoardView GetBoard(int numLines, int numColumns)
+        private readonly System.Random _sysRandom = new System.Random();
+
+        public IBoardView GetBoard(Transform root, int numLines, int numColumns)
         {
             // Create Builder
             BoardModel.Builder builder = new BoardModel.Builder();
 
             // Create Board Model
-            int[,] blocks = new int[5, 5]
+            int[,] blocks = new int[numLines, numColumns];
+            for (int line = 0; line < numLines; line++)
             {
-                {0, 0, 0, 0, 0 },   // line 1
-                {1, 2, 3, 4, 5 },   // line 2
-                {6, 7, 1, 2, 3 },   // line 3
-                {4, 5, 6, 7, 1 },   // line 4
-                {0, 0, 0, 0, 0 }    // line 5
-            };
+                for (int col = 0; col < numColumns; col++)
+                {
+                    blocks[line, col] = _sysRandom.Next(0, 8);
+                }
+            }
 
             IBoardModel boardModel = builder.Build(blocks);
 
-            float halfBoardWidth = _blockWidth * numLines * 0.5f;
-            float halfBoardHeight = _blockHeight * numColumns * 0.5f;
+            float halfBoardWidth = _blockWidth * (numColumns - 1) * 0.5f;
+            float halfBoardHeight = _blockHeight * (numLines - 1) * 0.5f;
 
             // Create Board View from Model
             for (int line = 0; line < numLines; line++)
             {
                 for (int col = 0; col < numColumns; col++)
                 {
-                    // Create a transform
-                    // TODO: Use an object pool instead
-                    GameObject blockInstance = Instantiate(_blockPrefab);
-                    blockInstance.name = string.Format("Block [{0}, {1}]", line, col);
-
                     // Set position and scale
-                    float normalizedColumn = col / (float)numColumns;
-                    float normalizedLine = line / (float)numLines;
+                    float normalizedColumn = col / (numColumns - 1f);
+                    float normalizedLine = line / (numLines - 1f);
                     float blockX = Mathf.Lerp(-halfBoardWidth, halfBoardWidth, normalizedColumn);
-                    float blockY = Mathf.Lerp(-halfBoardHeight, halfBoardHeight, normalizedLine);
-                    blockInstance.transform.localPosition = new Vector3(blockX, blockY, 0);
-                    blockInstance.transform.localScale = new Vector3(_blockWidth, _blockHeight, 1f);
+                    float blockY = Mathf.Lerp(halfBoardHeight, -halfBoardHeight, normalizedLine);
+                    Vector3 localPosition = new Vector3(blockX, blockY, 0);
+                    Vector3 localScale = new Vector3(_blockWidth, _blockHeight, 1f);
 
-                    Renderer renderer = blockInstance.GetComponent<Renderer>();
+                    // Create a transform
+                    Renderer blockInstance = Instantiate(_blockPrefab, root);
+                    blockInstance.transform.localPosition = localPosition;
+                    blockInstance.transform.localScale = localScale;
+                    blockInstance.gameObject.name = string.Format("Block [{0}, {1}]", line, col);
+
                     int blockType = boardModel.Blocks[line, col];
                     switch (blockType)
-                    {                        
+                    {
                         case LightBlueBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _lightBlueBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _lightBlueBlockMat;
                             break;
                         case DarkBlueBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _darkBlueBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _darkBlueBlockMat;
                             break;
                         case OrangeBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _orangeBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _orangeBlockMat;
                             break;
                         case YellowBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _yellowBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _yellowBlockMat;
                             break;
                         case GreenBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _greenBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _greenBlockMat;
                             break;
                         case PurpleBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _purpleBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _purpleBlockMat;
                             break;
                         case RedBlock:
-                            blockInstance.SetActive(true);
-                            renderer.sharedMaterial = _redBlockMat;
+                            blockInstance.gameObject.SetActive(true);
+                            blockInstance.sharedMaterial = _redBlockMat;
                             break;
                         default:
-                            blockInstance.SetActive(false);
+                            blockInstance.gameObject.SetActive(false);
                             break;
                     }
                 }
             }
-            
+
             return default;
         }
     }

@@ -16,6 +16,6 @@ namespace Tetris.Models
 
     public interface IBoardFactory
     {
-        IBoardView GetBoard(int numLines, int numColumns);
+        IBoardView GetBoard(Transform root, int numLines, int numColumns);
     }
 }
