@@ -6,7 +6,7 @@ namespace Tetris.Factories
 {
     public class TetrominosFactory : ITetrominosFactory
     {
-        public ITetrominoModel GetPiece(int pieceType)
+        public ITetrominoModel GetPiece(int startLine, int startColumn, int pieceType)
         {
             switch (pieceType)
             {
@@ -18,7 +18,11 @@ namespace Tetris.Factories
                 case Constants.JPieceType:
                 case Constants.IPieceType:
                 default:
-                    ITetrominoModel tetrominoModel = new LetterITetrominoModel();
+                    ITetrominoModel tetrominoModel = new LetterITetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
                     return tetrominoModel;
             }            
         }
@@ -26,6 +30,6 @@ namespace Tetris.Factories
 
     public interface ITetrominosFactory
     {
-        ITetrominoModel GetPiece(int pieceType);
+        ITetrominoModel GetPiece(int startLine, int startColumn, int pieceType);
     }
 }

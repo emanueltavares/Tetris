@@ -24,9 +24,11 @@ namespace Tetris.Models
             };
 
         // Properties
+        public int CurrentLine { get; set; }
+        public int CurrentColumn { get; set; }
         public int NumLines => LetterINumLines;
         public int NumColumns => LetterINumColums;
-        public int[,] Blocks { get; private set; }
+        public int[,] Blocks { get; private set; }        
 
         // Private
         private int _currentRotation = 0;

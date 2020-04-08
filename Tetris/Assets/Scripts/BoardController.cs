@@ -33,8 +33,8 @@ namespace Tetris.Controllers
 
             Create();
 
-            _currentTetromino = _tetrominosFactory.GetPiece(Constants.IPieceType);
-            ApplyTetrominoToModel(0, 0, _currentTetromino);
+            _currentTetromino = _tetrominosFactory.GetPiece(5, 5, Constants.IPieceType);
+            ApplyTetrominoToModel(_currentTetromino);
             _boardView.UpdateView(_boardModel, _blockMaterials);
         }
 
@@ -43,14 +43,14 @@ namespace Tetris.Controllers
             (_boardModel, _boardView) = _boardFactory.GetBoard(_blockMaterials);
         }
 
-        private void ApplyTetrominoToModel(int startLine, int startCol, ITetrominoModel tetromino)
+        private void ApplyTetrominoToModel(ITetrominoModel tetromino)
         {
-            for (int line = startLine; line < tetromino.NumLines; line++)
+            for (int line = 0; line < tetromino.NumLines; line++)
             {
-                for (int col = startCol; col < tetromino.NumColumns; col++)
+                for (int col = 0; col < tetromino.NumColumns; col++)
                 {
                     int blockType = tetromino.Blocks[line, col];
-                    _boardModel.Blocks[startLine + line, startCol + col] = blockType;
+                    _boardModel.Blocks[tetromino.CurrentLine + line, tetromino.CurrentColumn + col] = blockType;
                 }
             }
         }

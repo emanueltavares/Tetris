@@ -18,8 +18,8 @@ namespace Tetris.Models
                 {
                     for (int col = 0; col < maxNumColumns; col++)
                     {
-                        //blocks[line, col] = Constants.NoPiece;
-                        blocks[line, col] = Random.Range(0, 8);
+                        blocks[line, col] = Constants.NoPiece;
+                        //blocks[line, col] = Random.Range(0, 8);
                     }
                 }
 
