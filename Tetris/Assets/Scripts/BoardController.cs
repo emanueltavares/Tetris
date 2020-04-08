@@ -1,4 +1,5 @@
-﻿using Tetris.Factories;
+﻿using System.Collections;
+using Tetris.Factories;
 using Tetris.Models;
 using Tetris.Utils;
 using UnityEngine;
@@ -27,32 +28,71 @@ namespace Tetris.Controllers
         private ITetrominoModel _currentTetromino;
         private Material[] _blockMaterials;
 
+        // Constants
+        private const int StartLine = 0;
+        private const int StartColumn = 3;
+
         protected virtual void OnEnable()
         {
+            // Initialize block materials
             _blockMaterials = new Material[8] { _noBlockMat, _lightBlueBlockMat, _darkBlueBlockMat, _orangeBlockMat, _yellowBlockMat, _greenBlockMat, _purpleBlockMat, _redBlockMat };
 
-            Create();
-
-            _currentTetromino = _tetrominosFactory.GetPiece(5, 5, Constants.IPieceType);
-            ApplyTetrominoToModel(_currentTetromino);
-            _boardView.UpdateView(_boardModel, _blockMaterials);
-        }
-
-        private void Create()
-        {            
+            // Initialize board model and board view
             (_boardModel, _boardView) = _boardFactory.GetBoard(_blockMaterials);
+
+            // Create the first tetromino
+            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, Constants.IPieceType);
+
+            ShowTetromino();
+
+            StartCoroutine(UpdateBoard());
         }
 
-        private void ApplyTetrominoToModel(ITetrominoModel tetromino)
+        private IEnumerator UpdateBoard()
         {
-            for (int line = 0; line < tetromino.NumLines; line++)
+            while (enabled)
             {
-                for (int col = 0; col < tetromino.NumColumns; col++)
+                yield return new WaitForSeconds(1f);
+
+                HideTetromino(); 
+
+                _currentTetromino.CurrentLine += 1;
+
+                ShowTetromino();
+            }
+        }
+
+        private void HideTetromino()
+        {
+            for (int line = 0; line < _currentTetromino.NumLines; line++)
+            {
+                for (int col = 0; col < _currentTetromino.NumColumns; col++)
                 {
-                    int blockType = tetromino.Blocks[line, col];
-                    _boardModel.Blocks[tetromino.CurrentLine + line, tetromino.CurrentColumn + col] = blockType;
+                    _boardModel.Blocks[_currentTetromino.CurrentLine + line, _currentTetromino.CurrentColumn + col] = Constants.NoPiece;
                 }
             }
+
+            // Update view after hiding tetromino
+            int endLine = _currentTetromino.CurrentLine + _currentTetromino.NumLines;
+            int endColumn = _currentTetromino.CurrentColumn + _currentTetromino.NumColumns;
+            _boardView.UpdateView(_boardModel, _currentTetromino.CurrentLine, _currentTetromino.CurrentColumn, endLine, endColumn, _blockMaterials);
+        }
+
+        private void ShowTetromino()
+        {
+            for (int line = 0; line < _currentTetromino.NumLines; line++)
+            {
+                for (int col = 0; col < _currentTetromino.NumColumns; col++)
+                {
+                    int blockType = _currentTetromino.Blocks[line, col];
+                    _boardModel.Blocks[_currentTetromino.CurrentLine + line, _currentTetromino.CurrentColumn + col] = blockType;
+                }
+            }
+
+            // Update view after showing tetromino
+            int endLine = _currentTetromino.CurrentLine + _currentTetromino.NumLines;
+            int endColumn = _currentTetromino.CurrentColumn + _currentTetromino.NumColumns;
+            _boardView.UpdateView(_boardModel, _currentTetromino.CurrentLine, _currentTetromino.CurrentColumn, endLine, endColumn, _blockMaterials);
         }
     }
 }
