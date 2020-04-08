@@ -2,8 +2,8 @@
 {
     public interface ITetrominoModel
     {
-        int Width { get; }
-        int Height { get; }
+        int NumLines { get; }
+        int NumColumns { get; }
         int[,] Blocks { get; }
         void RotateClockwise();
         void RotateCounterClockwise();

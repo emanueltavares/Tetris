@@ -5,17 +5,17 @@ namespace Tetris.Models
     public class LetterITetrominoModel : ITetrominoModel
     {
         // Constants
-        private const int LetterIWidth = 4;
-        private const int LetterIHeight = 4;
+        private const int LetterINumLines = 4;
+        private const int LetterINumColums = 4;
         private const int MaxRotations = 1;
-        private static readonly int[,] Vertical = new int[LetterIWidth, LetterIHeight]
+        private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColums]
             {
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 }
             };
-        private static readonly int[,] Horizontal = new int[LetterIWidth, LetterIHeight]
+        private static readonly int[,] Horizontal = new int[LetterINumLines, LetterINumColums]
             {
                 {0, 0, 0, 0 },
                 {Constants.IPieceType, Constants.IPieceType, Constants.IPieceType, Constants.IPieceType },
@@ -24,8 +24,8 @@ namespace Tetris.Models
             };
 
         // Properties
-        public int Width => LetterIWidth;
-        public int Height => LetterIHeight;
+        public int NumLines => LetterINumLines;
+        public int NumColumns => LetterINumColums;
         public int[,] Blocks { get; private set; }
 
         // Private

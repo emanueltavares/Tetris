@@ -152,6 +152,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boardFactory: {fileID: 1138700975}
+  _noBlockMat: {fileID: 2100000, guid: 2cdbc8e8dcb832e4293faafde862e990, type: 2}
+  _lightBlueBlockMat: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
+  _darkBlueBlockMat: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
+  _orangeBlockMat: {fileID: 2100000, guid: e59918cc047cfe2468dabf4f8fecbeb5, type: 2}
+  _yellowBlockMat: {fileID: 2100000, guid: 25ecc389e77b12048a6d4d523f9a61a7, type: 2}
+  _greenBlockMat: {fileID: 2100000, guid: e85889205a8d70c4eafdc19f97705813, type: 2}
+  _purpleBlockMat: {fileID: 2100000, guid: 82f124754ff55d54e8d318cb118e78b7, type: 2}
+  _redBlockMat: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
 --- !u!4 &1138700974
 Transform:
   m_ObjectHideFlags: 0
@@ -178,14 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff309538ac3de14bb7f7a96e808f034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noBlockMat: {fileID: 2100000, guid: 2cdbc8e8dcb832e4293faafde862e990, type: 2}
-  _lightBlueBlockMat: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
-  _darkBlueBlockMat: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
-  _orangeBlockMat: {fileID: 2100000, guid: e59918cc047cfe2468dabf4f8fecbeb5, type: 2}
-  _yellowBlockMat: {fileID: 2100000, guid: 25ecc389e77b12048a6d4d523f9a61a7, type: 2}
-  _greenBlockMat: {fileID: 2100000, guid: e85889205a8d70c4eafdc19f97705813, type: 2}
-  _purpleBlockMat: {fileID: 2100000, guid: 82f124754ff55d54e8d318cb118e78b7, type: 2}
-  _redBlockMat: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
   _blocksParent: {fileID: 1138700974}
