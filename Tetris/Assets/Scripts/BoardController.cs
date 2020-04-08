@@ -1,24 +1,37 @@
 ﻿using Tetris.Factories;
 using Tetris.Models;
+using Tetris.Utils;
 using UnityEngine;
 
 namespace Tetris.Controllers
 {
     public partial class BoardController : MonoBehaviour
     {
-        [SerializeField] private int _maxNumLines;      // max number of lines of our board
-        [SerializeField] private int _maxNumColumns;    // max number of columns of our board
+        // Serialized Fields
         [SerializeField] private BoardFactory _boardFactory;
 
+        // Private Fields
+        private IBoardModel _boardModel;
+        private IBoardView _boardView;
+        private ITetrominosFactory _tetrominosFactory = new TetrominosFactory();
+        private ITetrominoModel _currentTetromino;
 
         protected virtual void OnEnable()
         {
             Create();
+
+            _currentTetromino = _tetrominosFactory.GetPiece(Constants.IPieceType);
+            //ApplyTetrominoToModel(_currentTetromino);
         }
 
         private void Create()
         {
-            IBoardView boardView = _boardFactory.GetBoard(transform, _maxNumLines, _maxNumColumns);            
+            (_boardModel, _boardView) = _boardFactory.GetBoard();
         }
+
+        //private void ApplyTetrominoToModel(ITetrominoModel tetromino)
+        //{
+
+        //}
     }
 }

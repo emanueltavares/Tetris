@@ -151,8 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8d261cd312c4242adfc9a1fc781222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxNumLines: 20
-  _maxNumColumns: 10
   _boardFactory: {fileID: 1138700975}
 --- !u!4 &1138700974
 Transform:
@@ -162,7 +160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138700972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -190,6 +188,9 @@ MonoBehaviour:
   _redBlockMat: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
+  _blocksParent: {fileID: 1138700974}
+  _maxNumLines: 20
+  _maxNumColumns: 10
   _blockScale: 0.425
 --- !u!1001 &1776894032822266201
 PrefabInstance:

@@ -11,11 +11,11 @@ namespace Tetris.Models
 
     public interface IBoardView
     {
-        Transform[,] Blocks { get; }
+        Renderer[,] Blocks { get; }
     }
 
     public interface IBoardFactory
     {
-        IBoardView GetBoard(Transform root, int numLines, int numColumns);
+        (IBoardModel, IBoardView) GetBoard();
     }
 }
