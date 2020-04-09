@@ -38,18 +38,6 @@ namespace Tetris.Models
     {
         public Renderer[,] Blocks { get; private set; }
 
-        //public void UpdateView(IBoardModel boardModel, Material[] blockMaterials)
-        //{
-        //    for (int line = 0; line < boardModel.NumLines; line++)
-        //    {
-        //        for (int column = 0; column < boardModel.NumColumns; column++)
-        //        {
-        //            int blockType = boardModel.Blocks[line, column];
-        //            Blocks[line, column].sharedMaterial = blockMaterials[blockType];
-        //        }
-        //    }
-        //}
-
         public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, Material[] blockMaterials)
         {
             for (int line = startLine; line < endLine; line++)

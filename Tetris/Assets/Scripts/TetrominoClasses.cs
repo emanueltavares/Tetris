@@ -7,7 +7,7 @@ namespace Tetris.Models
         // Constants
         private const int LetterINumLines = 4;
         private const int LetterINumColums = 4;
-        private const int MaxRotations = 1;
+        private const int MaxRotations = 2;
         private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColums]
             {
                 {0, 0, Constants.IPieceType, 0 },

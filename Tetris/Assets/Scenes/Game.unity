@@ -155,7 +155,7 @@ MonoBehaviour:
   _boardFactory: {fileID: 1138700975}
   _inputController: {fileID: 1138700976}
   _startGravityInterval: 1
-  _startHoldDirectionMaxTime: 0.25
+  _startHoldInputMaxTime: 0.1
   _noBlockMat: {fileID: 2100000, guid: 2cdbc8e8dcb832e4293faafde862e990, type: 2}
   _lightBlueBlockMat: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
   _darkBlueBlockMat: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
@@ -210,6 +210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftButtonName: Left
   _rightButtonName: Right
+  _rotateClockwiseButtonName: RotateClockwise
+  _rotateCounterClockwiseButtonName: RotateCounterClockwise
 --- !u!1001 &1776894032822266201
 PrefabInstance:
   m_ObjectHideFlags: 0

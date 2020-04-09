@@ -12,7 +12,7 @@ namespace Tetris.Controllers
         [SerializeField] private BoardFactory _boardFactory;
         [SerializeField] private InputController _inputController;
         [SerializeField] private float _startGravityInterval = 1f;
-        [SerializeField] private float _startHoldDirectionMaxTime = 0.1f;
+        [SerializeField] private float _startHoldInputMaxTime = 0.1f;
 
         [Header("Tetrominos Colors")]
         [SerializeField] private Material _noBlockMat;         // GREY is the color of the empty block
@@ -81,20 +81,30 @@ namespace Tetris.Controllers
         private IEnumerator ControlTetromino()
         {
             // Update hold direction max time
-            _inputController.HoldDirectionMaxTime = _startHoldDirectionMaxTime;
+            _inputController.HoldInputMaxTime = _startHoldInputMaxTime;
 
             for (float elapsedTime = 0f; elapsedTime < _applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, _applyGravityInterval, Time.deltaTime))
             {
                 ClearTetromino();
 
-                if (_inputController.CanMoveRight)
+                if (_inputController.MoveRight)
                 {
                     _currentTetromino.CurrentColumn += 1;
                 }
 
-                if (_inputController.CanMoveLeft)
+                if (_inputController.MoveLeft)
                 {
                     _currentTetromino.CurrentColumn -= 1;
+                }
+
+                if (_inputController.RotateClockwise)
+                {
+                    _currentTetromino.RotateClockwise();
+                }
+
+                if (_inputController.RotateCounterClockwise)
+                {
+                    _currentTetromino.RotateCounterClockwise();
                 }
 
                 DrawTetromino();
@@ -137,7 +147,7 @@ namespace Tetris.Controllers
                     // Converts the block line and column to board line and column
                     int boardLine = _currentTetromino.CurrentLine + blockLine;
                     int boardColumn = _currentTetromino.CurrentColumn + blockColumn;
-                    
+
                     if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
                     {
                         _boardModel.Blocks[boardLine, boardColumn] = blockType;
