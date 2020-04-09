@@ -61,7 +61,8 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
-            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, Constants.IPieceType);            
+            int randomPieceType = Random.Range(Constants.IPieceType, Constants.ZPieceType + 1);
+            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, randomPieceType);
 
             if (ValidateTetrominoPosition(_currentTetromino))
             {
@@ -73,7 +74,7 @@ namespace Tetris.Controllers
             {
                 // Show the tetromino
                 DrawTetromino(_currentTetromino);
-                
+
                 // Game Over
             }
 
@@ -85,13 +86,13 @@ namespace Tetris.Controllers
             bool activateDropHard = false;
 
             while (!isTetrominoLocked) // while current tetromino is not locked
-            {                
+            {
                 // if drop hard was activated, we skip tetromino control
                 if (!activateDropHard)
                 {
                     // Control tetromino
                     yield return StartCoroutine(ControlTetromino());
-                }                
+                }
 
                 // Check if player has clicked the drop hard button while controlling the tetromino
                 if (_inputController.DropHard)
@@ -145,7 +146,7 @@ namespace Tetris.Controllers
                         _currentTetromino.CurrentColumn += 1;
                     }
                 }
-                
+
                 if (_inputController.MoveRight)
                 {
                     _currentTetromino.CurrentColumn += 1;
@@ -164,7 +165,7 @@ namespace Tetris.Controllers
                         // Disable previous rotation
                         _currentTetromino.RotateCounterClockwise();
                     }
-                        
+
                 }
 
                 if (_inputController.RotateCounterClockwise)
@@ -193,7 +194,7 @@ namespace Tetris.Controllers
                     int boardLine = tetromino.CurrentLine + blockLine;
                     int boardColumn = tetromino.CurrentColumn + blockColumn;
 
-                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && 
+                    if (boardLine >= 0 && boardLine < _boardModel.NumLines &&
                         boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
                     {
                         if (_currentTetromino.Blocks[blockLine, blockColumn] != Constants.NoPiece)

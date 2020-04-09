@@ -6,16 +6,18 @@ namespace Tetris.Models
     {
         // Constants
         private const int LetterINumLines = 4;
-        private const int LetterINumColums = 4;
+        private const int LetterINumColumns = 4;
         private const int MaxRotations = 2;
-        private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColums]
+
+        // Readonlies
+        private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColumns]
             {
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 },
                 {0, 0, Constants.IPieceType, 0 }
             };
-        private static readonly int[,] Horizontal = new int[LetterINumLines, LetterINumColums]
+        private static readonly int[,] Horizontal = new int[LetterINumLines, LetterINumColumns]
             {
                 {0, 0, 0, 0 },
                 {Constants.IPieceType, Constants.IPieceType, Constants.IPieceType, Constants.IPieceType },
@@ -27,7 +29,7 @@ namespace Tetris.Models
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterINumLines;
-        public int NumColumns => LetterINumColums;
+        public int NumColumns => LetterINumColumns;
         public int[,] Blocks { get; private set; }        
 
         // Private
@@ -35,20 +37,20 @@ namespace Tetris.Models
 
         public LetterITetrominoModel()
         {
-            Blocks = Vertical;
+            Blocks = Horizontal;
         }
 
         public void RotateClockwise()
         {
             _currentRotation += 1;
-            _currentRotation %= MaxRotations;
+            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
             SetRotation();
         }
 
         public void RotateCounterClockwise()
         {
             _currentRotation -= 1;
-            _currentRotation %= MaxRotations;
+            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
             SetRotation();
         }
 

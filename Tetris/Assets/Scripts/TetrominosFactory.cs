@@ -8,23 +8,67 @@ namespace Tetris.Factories
     {
         public ITetrominoModel GetPiece(int startLine, int startColumn, int pieceType)
         {
+            ITetrominoModel tetromino;
             switch (pieceType)
             {
                 case Constants.OPieceType:
-                case Constants.LPieceType:
-                case Constants.SPieceType:
-                case Constants.TPieceType:
-                case Constants.ZPieceType:
-                case Constants.JPieceType:
-                case Constants.IPieceType:
-                default:
-                    ITetrominoModel tetrominoModel = new LetterITetrominoModel()
+                    tetromino = new LetterOTetrominoModel()
                     {
                         CurrentLine = startLine,
                         CurrentColumn = startColumn
                     };
-                    return tetrominoModel;
-            }            
+                    break;
+                case Constants.LPieceType:
+                    tetromino = new LetterLTetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                case Constants.SPieceType:
+                    tetromino = new LetterSTetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                case Constants.TPieceType:
+                    tetromino = new LetterTTetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                case Constants.ZPieceType:
+                    tetromino = new LetterZTetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                case Constants.JPieceType:
+                    tetromino = new LetterJTetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                case Constants.IPieceType:
+                    tetromino = new LetterITetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+                default:
+                    tetromino = new LetterITetrominoModel()
+                    {
+                        CurrentLine = startLine,
+                        CurrentColumn = startColumn
+                    };
+                    break;
+            }
+            return tetromino;
         }
     }
 
