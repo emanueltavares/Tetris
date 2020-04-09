@@ -58,11 +58,11 @@ namespace Tetris.Models
         {
             if (_currentRotation == 0)
             {
-                Blocks = Vertical;
+                Blocks = Horizontal;
             }
             else
             {
-                Blocks = Horizontal;
+                Blocks = Vertical;
             }
         }
     }

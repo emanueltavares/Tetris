@@ -35,6 +35,8 @@ namespace Tetris.Controllers
         private const int StartLine = 0;
         private const int StartColumn = 3;
 
+        private System.Random _random = new System.Random();
+
         protected virtual void OnEnable()
         {
             // Initialize block materials
@@ -61,7 +63,7 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
-            int randomPieceType = Random.Range(Constants.IPieceType, Constants.ZPieceType + 1);
+            int randomPieceType = _random.Next(Constants.IPieceType, Constants.ZPieceType + 1);
             _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, randomPieceType);
 
             if (ValidateTetrominoPosition(_currentTetromino))
