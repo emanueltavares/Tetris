@@ -11,25 +11,23 @@ namespace Tetris.Controllers
         // Serialized Fields
         [SerializeField] private BoardFactory _boardFactory;
         [SerializeField] private InputController _inputController;
-        [SerializeField] private float _startGravityInterval = 1f;
-        [SerializeField] private float _startHoldInputMaxTime = 0.1f;
+        [SerializeField] private float _applyGravityInterval = 1f;
 
         [Header("Tetrominos Colors")]
-        [SerializeField] private Material _noBlockMat;         // GREY is the color of the empty block
-        [SerializeField] private Material _lightBlueBlockMat;  // LIGHT BLUE is the color of the I piece
-        [SerializeField] private Material _darkBlueBlockMat;   // DARK BLUE is the color of the J piece
-        [SerializeField] private Material _orangeBlockMat;     // ORANGE is the color of the L piece
-        [SerializeField] private Material _yellowBlockMat;     // YELLOW is the color of the O piece
-        [SerializeField] private Material _greenBlockMat;      // GREEN is the color of the S piece
-        [SerializeField] private Material _purpleBlockMat;     // PURPLE is the color of the T piece
-        [SerializeField] private Material _redBlockMat;        // RED is the color of the Z piece
+        [SerializeField] private Material _noBlockMat;               // GREY is the color of the empty block
+        [SerializeField] private Material _lightBlueBlockMat;        // LIGHT BLUE is the color of the I piece
+        [SerializeField] private Material _darkBlueBlockMat;         // DARK BLUE is the color of the J piece
+        [SerializeField] private Material _orangeBlockMat;           // ORANGE is the color of the L piece
+        [SerializeField] private Material _yellowBlockMat;           // YELLOW is the color of the O piece
+        [SerializeField] private Material _greenBlockMat;            // GREEN is the color of the S piece
+        [SerializeField] private Material _purpleBlockMat;           // PURPLE is the color of the T piece
+        [SerializeField] private Material _redBlockMat;              // RED is the color of the Z piece
 
         // Private Fields
         private IBoardModel _boardModel;
         private IBoardView _boardView;
         private ITetrominosFactory _tetrominosFactory = new TetrominosFactory();
         private ITetrominoModel _currentTetromino;
-        private float _applyGravityInterval;
         private Material[] _blockMaterials;
 
         // Constants
@@ -38,13 +36,14 @@ namespace Tetris.Controllers
 
         protected virtual void OnEnable()
         {
-            _applyGravityInterval = _startGravityInterval;
-
             // Initialize block materials
             _blockMaterials = new Material[8] { _noBlockMat, _lightBlueBlockMat, _darkBlueBlockMat, _orangeBlockMat, _yellowBlockMat, _greenBlockMat, _purpleBlockMat, _redBlockMat };
 
             // Initialize board model and board view
             (_boardModel, _boardView) = _boardFactory.GetBoard(_blockMaterials);
+
+            // Initialized hold input max time
+            _inputController.HoldInputMaxTime = _applyGravityInterval / _boardModel.NumColumns;
 
             // Start the game
             StartCoroutine(SpawnTetromino());
@@ -65,13 +64,14 @@ namespace Tetris.Controllers
         private IEnumerator MoveTetromino()
         {
             while (enabled) // while current tetromino is not locked
-            {
+            {                
                 // Control tetromino
                 yield return StartCoroutine(ControlTetromino());
 
                 ClearTetromino();
 
                 // Apply gravity
+
                 _currentTetromino.CurrentLine += 1;
 
                 DrawTetromino();
@@ -80,21 +80,18 @@ namespace Tetris.Controllers
 
         private IEnumerator ControlTetromino()
         {
-            // Update hold direction max time
-            _inputController.HoldInputMaxTime = _startHoldInputMaxTime;
-
             for (float elapsedTime = 0f; elapsedTime < _applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, _applyGravityInterval, Time.deltaTime))
             {
                 ClearTetromino();
 
-                if (_inputController.MoveRight)
-                {
-                    _currentTetromino.CurrentColumn += 1;
-                }
-
                 if (_inputController.MoveLeft)
                 {
                     _currentTetromino.CurrentColumn -= 1;
+                }
+                
+                if (_inputController.MoveRight)
+                {
+                    _currentTetromino.CurrentColumn += 1;
                 }
 
                 if (_inputController.RotateClockwise)
