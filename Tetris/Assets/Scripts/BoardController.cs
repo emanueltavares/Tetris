@@ -31,10 +31,6 @@ namespace Tetris.Controllers
         private ITetrominoModel _currentTetromino;
         private Material[] _blockMaterials;
 
-        // Constants
-        private const int StartLine = 0;
-        private const int StartColumn = 3;
-
         private System.Random _random = new System.Random();
 
         protected virtual void OnEnable()
@@ -63,8 +59,11 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
+            
             int randomPieceType = _random.Next(Constants.IPieceType, Constants.ZPieceType + 1);
-            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, randomPieceType);
+            int startLine = randomPieceType == Constants.OPieceType ? 0 : -1;
+            int startColumn = 3;
+            _currentTetromino = _tetrominosFactory.GetPiece(startLine, startColumn, randomPieceType);
 
             if (ValidateTetrominoPosition(_currentTetromino))
             {
@@ -105,6 +104,7 @@ namespace Tetris.Controllers
                 ClearTetromino(_currentTetromino);
 
                 // Apply gravity
+                Debug.Log("apply gravity");
                 _currentTetromino.CurrentLine += 1;
 
                 if (!ValidateTetrominoPosition(_currentTetromino))
@@ -116,6 +116,9 @@ namespace Tetris.Controllers
 
                 DrawTetromino(_currentTetromino);
             }
+
+            // Skip a frame so we can reset our input
+            yield return null;
 
             yield return StartCoroutine(SpawnTetromino());
         }
