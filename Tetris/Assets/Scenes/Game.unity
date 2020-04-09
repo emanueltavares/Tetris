@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 1138700974}
   - component: {fileID: 1138700973}
   - component: {fileID: 1138700975}
+  - component: {fileID: 1138700976}
   m_Layer: 0
   m_Name: Board Controller
   m_TagString: Untagged
@@ -152,6 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boardFactory: {fileID: 1138700975}
+  _inputController: {fileID: 1138700976}
+  _startGravityInterval: 1
+  _startHoldDirectionMaxTime: 0.25
   _noBlockMat: {fileID: 2100000, guid: 2cdbc8e8dcb832e4293faafde862e990, type: 2}
   _lightBlueBlockMat: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
   _darkBlueBlockMat: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
@@ -192,6 +196,20 @@ MonoBehaviour:
   _maxNumLines: 20
   _maxNumColumns: 10
   _blockScale: 0.425
+--- !u!114 &1138700976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138700972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444f24cf9949da4458d1236775b19ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftButtonName: Left
+  _rightButtonName: Right
 --- !u!1001 &1776894032822266201
 PrefabInstance:
   m_ObjectHideFlags: 0

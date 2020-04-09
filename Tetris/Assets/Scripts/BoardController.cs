@@ -10,6 +10,9 @@ namespace Tetris.Controllers
     {
         // Serialized Fields
         [SerializeField] private BoardFactory _boardFactory;
+        [SerializeField] private InputController _inputController;
+        [SerializeField] private float _startGravityInterval = 1f;
+        [SerializeField] private float _startHoldDirectionMaxTime = 0.1f;
 
         [Header("Tetrominos Colors")]
         [SerializeField] private Material _noBlockMat;         // GREY is the color of the empty block
@@ -26,6 +29,7 @@ namespace Tetris.Controllers
         private IBoardView _boardView;
         private ITetrominosFactory _tetrominosFactory = new TetrominosFactory();
         private ITetrominoModel _currentTetromino;
+        private float _applyGravityInterval;
         private Material[] _blockMaterials;
 
         // Constants
@@ -34,35 +38,72 @@ namespace Tetris.Controllers
 
         protected virtual void OnEnable()
         {
+            _applyGravityInterval = _startGravityInterval;
+
             // Initialize block materials
             _blockMaterials = new Material[8] { _noBlockMat, _lightBlueBlockMat, _darkBlueBlockMat, _orangeBlockMat, _yellowBlockMat, _greenBlockMat, _purpleBlockMat, _redBlockMat };
 
             // Initialize board model and board view
             (_boardModel, _boardView) = _boardFactory.GetBoard(_blockMaterials);
 
+            // Start the game
+            StartCoroutine(SpawnTetromino());
+        }
+
+        private IEnumerator SpawnTetromino()
+        {
             // Create the first tetromino
             _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, Constants.IPieceType);
 
-            ShowTetromino();
+            // Show the tetromino
+            DrawTetromino();
 
-            StartCoroutine(UpdateBoard());
+            // Update
+            yield return StartCoroutine(MoveTetromino());
         }
 
-        private IEnumerator UpdateBoard()
+        private IEnumerator MoveTetromino()
         {
-            while (enabled)
+            while (enabled) // while current tetromino is not locked
             {
-                yield return new WaitForSeconds(1f);
+                // Control tetromino
+                yield return StartCoroutine(ControlTetromino());
+                
+                ClearTetromino();
 
-                HideTetromino(); 
-
+                // Apply gravity
                 _currentTetromino.CurrentLine += 1;
 
-                ShowTetromino();
+                DrawTetromino();
             }
         }
 
-        private void HideTetromino()
+        private IEnumerator ControlTetromino()
+        {
+            // Update hold direction max time
+            _inputController.HoldDirectionMaxTime = _startHoldDirectionMaxTime;
+
+            for (float elapsedTime = 0f; elapsedTime < _applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, _applyGravityInterval, Time.deltaTime))
+            {
+                ClearTetromino();
+
+                if (_inputController.CanMoveRight)
+                {
+                    _currentTetromino.CurrentColumn += 1;
+                }
+
+                if (_inputController.CanMoveLeft)
+                {
+                    _currentTetromino.CurrentColumn -= 1;
+                }
+
+                DrawTetromino();
+
+                yield return null;
+            }
+        }
+
+        private void ClearTetromino()
         {
             for (int line = 0; line < _currentTetromino.NumLines; line++)
             {
@@ -78,7 +119,7 @@ namespace Tetris.Controllers
             _boardView.UpdateView(_boardModel, _currentTetromino.CurrentLine, _currentTetromino.CurrentColumn, endLine, endColumn, _blockMaterials);
         }
 
-        private void ShowTetromino()
+        private void DrawTetromino()
         {
             for (int line = 0; line < _currentTetromino.NumLines; line++)
             {
