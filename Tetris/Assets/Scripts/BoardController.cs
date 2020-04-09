@@ -60,18 +60,28 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
-            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, Constants.IPieceType);
+            _currentTetromino = _tetrominosFactory.GetPiece(StartLine, StartColumn, Constants.IPieceType);            
 
-            // Show the tetromino
-            DrawTetromino(_currentTetromino);
+            if (ValidateTetrominoPosition(_currentTetromino))
+            {
+                // Show the tetromino
+                DrawTetromino(_currentTetromino);
+                yield return StartCoroutine(MoveTetromino());
+            }
+            else
+            {
+                // Show the tetromino
+                DrawTetromino(_currentTetromino);
+                
+                // Game Over
+            }
 
-            // Update
-            yield return StartCoroutine(MoveTetromino());
         }
 
         private IEnumerator MoveTetromino()
         {
-            while (enabled) // while current tetromino is not locked
+            bool isTetrominoLocked = false;
+            while (!isTetrominoLocked) // while current tetromino is not locked
             {                
                 // Control tetromino
                 yield return StartCoroutine(ControlTetromino());
@@ -79,11 +89,19 @@ namespace Tetris.Controllers
                 ClearTetromino(_currentTetromino);
 
                 // Apply gravity
-
                 _currentTetromino.CurrentLine += 1;
+
+                if (!ValidateTetrominoPosition(_currentTetromino))
+                {
+                    // rollback and lock the tetromino
+                    _currentTetromino.CurrentLine -= 1;
+                    isTetrominoLocked = true;
+                }
 
                 DrawTetromino(_currentTetromino);
             }
+
+            yield return StartCoroutine(SpawnTetromino());
         }
 
         private IEnumerator ControlTetromino()
@@ -150,9 +168,13 @@ namespace Tetris.Controllers
                     int boardLine = tetromino.CurrentLine + blockLine;
                     int boardColumn = tetromino.CurrentColumn + blockColumn;
 
-                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
+                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && 
+                        boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
                     {
-                        _boardModel.Blocks[boardLine, boardColumn] = Constants.NoPiece;
+                        if (_currentTetromino.Blocks[blockLine, blockColumn] != Constants.NoPiece)
+                        {
+                            _boardModel.Blocks[boardLine, boardColumn] = Constants.NoPiece;
+                        }
                     }
                 }
             }
@@ -197,14 +219,16 @@ namespace Tetris.Controllers
                 for (int blockColumn = 0; blockColumn < tetromino.NumColumns; blockColumn++)
                 {
                     int blockType = tetromino.Blocks[blockLine, blockColumn];
-
-                    // Converts the block line and column to board line and column
-                    int boardLine = tetromino.CurrentLine + blockLine;
-                    int boardColumn = tetromino.CurrentColumn + blockColumn;
-
-                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
+                    if (blockType != Constants.NoPiece)
                     {
-                        _boardModel.Blocks[boardLine, boardColumn] = blockType;
+                        // Converts the block line and column to board line and column
+                        int boardLine = tetromino.CurrentLine + blockLine;
+                        int boardColumn = tetromino.CurrentColumn + blockColumn;
+
+                        if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
+                        {
+                            _boardModel.Blocks[boardLine, boardColumn] = blockType;
+                        }
                     }
                 }
             }
