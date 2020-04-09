@@ -8,6 +8,9 @@ namespace Tetris.Controllers
         [SerializeField] private string _rightButtonName;
         [SerializeField] private string _rotateClockwiseButtonName;
         [SerializeField] private string _rotateCounterClockwiseButtonName;
+        [SerializeField] private string _dropHardButtonName;
+        [SerializeField] private string _dropSoftButtonName;
+        [SerializeField] private string _holdPieceButtonName;
 
         // Private Fields
         private float _holdInputStartTime = 0f;
@@ -17,12 +20,21 @@ namespace Tetris.Controllers
         public bool MoveLeft { get; private set; }
         public bool MoveRight { get; private set; }
         public bool RotateClockwise { get; private set; }
-        public bool RotateCounterClockwise { get; private set; }        
+        public bool RotateCounterClockwise { get; private set; }
+
+        public bool DropHard { get; private set; }
+
+        public bool DropSoft { get; private set; }
+
+        public bool HoldPiece { get; private set; }
 
         protected virtual void Update()
         {            
             RotateClockwise = Input.GetButtonDown(_rotateClockwiseButtonName);
             RotateCounterClockwise = Input.GetButtonDown(_rotateCounterClockwiseButtonName);
+            DropHard = Input.GetButtonDown(_dropHardButtonName);
+            HoldPiece = Input.GetButtonDown(_holdPieceButtonName);
+            DropSoft = Input.GetButton(_dropSoftButtonName);
 
             // Is holding left arrow key
             MoveLeft = false;
@@ -67,5 +79,8 @@ namespace Tetris.Controllers
         bool MoveRight { get; }
         bool RotateCounterClockwise { get; }
         bool RotateClockwise { get; }
+        bool DropHard { get; }
+        bool DropSoft { get; }
+        bool HoldPiece { get; }
     }
 }

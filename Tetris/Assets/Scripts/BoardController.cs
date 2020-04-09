@@ -10,16 +10,17 @@ namespace Tetris.Controllers
     {
         // Serialized Fields        
         [SerializeField] private float _applyGravityInterval = 1f;
+        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;
 
         [Header("Tetrominos Colors")]
-        [SerializeField] private Material _noBlockMat;               // GREY is the color of the empty block
-        [SerializeField] private Material _lightBlueBlockMat;        // LIGHT BLUE is the color of the I piece
-        [SerializeField] private Material _darkBlueBlockMat;         // DARK BLUE is the color of the J piece
-        [SerializeField] private Material _orangeBlockMat;           // ORANGE is the color of the L piece
-        [SerializeField] private Material _yellowBlockMat;           // YELLOW is the color of the O piece
-        [SerializeField] private Material _greenBlockMat;            // GREEN is the color of the S piece
-        [SerializeField] private Material _purpleBlockMat;           // PURPLE is the color of the T piece
-        [SerializeField] private Material _redBlockMat;              // RED is the color of the Z piece
+        [SerializeField] private Material _noBlockMat;                                                     // GREY is the color of the empty block
+        [SerializeField] private Material _lightBlueBlockMat;                                              // LIGHT BLUE is the color of the I piece
+        [SerializeField] private Material _darkBlueBlockMat;                                               // DARK BLUE is the color of the J piece
+        [SerializeField] private Material _orangeBlockMat;                                                 // ORANGE is the color of the L piece
+        [SerializeField] private Material _yellowBlockMat;                                                 // YELLOW is the color of the O piece
+        [SerializeField] private Material _greenBlockMat;                                                  // GREEN is the color of the S piece
+        [SerializeField] private Material _purpleBlockMat;                                                 // PURPLE is the color of the T piece
+        [SerializeField] private Material _redBlockMat;                                                    // RED is the color of the Z piece
 
         // Private Fields
         private IBoardFactory _boardFactory;
@@ -81,10 +82,22 @@ namespace Tetris.Controllers
         private IEnumerator MoveTetromino()
         {
             bool isTetrominoLocked = false;
+            bool activateDropHard = false;
+
             while (!isTetrominoLocked) // while current tetromino is not locked
             {                
-                // Control tetromino
-                yield return StartCoroutine(ControlTetromino());
+                // if drop hard was activated, we skip tetromino control
+                if (!activateDropHard)
+                {
+                    // Control tetromino
+                    yield return StartCoroutine(ControlTetromino());
+                }                
+
+                // Check if player has clicked the drop hard button while controlling the tetromino
+                if (_inputController.DropHard)
+                {
+                    activateDropHard = true;
+                }
 
                 ClearTetromino(_currentTetromino);
 
@@ -106,8 +119,20 @@ namespace Tetris.Controllers
 
         private IEnumerator ControlTetromino()
         {
-            for (float elapsedTime = 0f; elapsedTime < _applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, _applyGravityInterval, Time.deltaTime))
+            float applyGravityInterval = _applyGravityInterval;
+            for (float elapsedTime = 0f; elapsedTime < applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, applyGravityInterval, Time.deltaTime))
             {
+                // if drop hard is activated, we skip control
+                if (_inputController.DropHard)
+                {
+                    yield break;
+                }
+
+                if (_inputController.DropSoft)
+                {
+                    applyGravityInterval = _applyGravityInterval * _dropSoftGravityMultiplier;
+                }
+
                 ClearTetromino(_currentTetromino);
 
                 if (_inputController.MoveLeft)
