@@ -12,7 +12,7 @@ namespace Tetris.Models
     public interface IBoardView
     {
         Renderer[,] Blocks { get; }
-        void UpdateView(IBoardModel boardModel, Material[] blockMaterials);
+        //void UpdateView(IBoardModel boardModel, Material[] blockMaterials);
         void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, Material[] blockMaterials);
     }
 

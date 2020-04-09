@@ -68,7 +68,7 @@ namespace Tetris.Controllers
             {
                 // Control tetromino
                 yield return StartCoroutine(ControlTetromino());
-                
+
                 ClearTetromino();
 
                 // Apply gravity
@@ -105,11 +105,18 @@ namespace Tetris.Controllers
 
         private void ClearTetromino()
         {
-            for (int line = 0; line < _currentTetromino.NumLines; line++)
+            for (int blockLine = 0; blockLine < _currentTetromino.NumLines; blockLine++)
             {
-                for (int col = 0; col < _currentTetromino.NumColumns; col++)
+                for (int blockColumn = 0; blockColumn < _currentTetromino.NumColumns; blockColumn++)
                 {
-                    _boardModel.Blocks[_currentTetromino.CurrentLine + line, _currentTetromino.CurrentColumn + col] = Constants.NoPiece;
+                    // Converts the block line and column to board line and column
+                    int boardLine = _currentTetromino.CurrentLine + blockLine;
+                    int boardColumn = _currentTetromino.CurrentColumn + blockColumn;
+
+                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
+                    {
+                        _boardModel.Blocks[boardLine, boardColumn] = Constants.NoPiece;
+                    }
                 }
             }
 
@@ -121,12 +128,20 @@ namespace Tetris.Controllers
 
         private void DrawTetromino()
         {
-            for (int line = 0; line < _currentTetromino.NumLines; line++)
+            for (int blockLine = 0; blockLine < _currentTetromino.NumLines; blockLine++)
             {
-                for (int col = 0; col < _currentTetromino.NumColumns; col++)
+                for (int blockColumn = 0; blockColumn < _currentTetromino.NumColumns; blockColumn++)
                 {
-                    int blockType = _currentTetromino.Blocks[line, col];
-                    _boardModel.Blocks[_currentTetromino.CurrentLine + line, _currentTetromino.CurrentColumn + col] = blockType;
+                    int blockType = _currentTetromino.Blocks[blockLine, blockColumn];
+
+                    // Converts the block line and column to board line and column
+                    int boardLine = _currentTetromino.CurrentLine + blockLine;
+                    int boardColumn = _currentTetromino.CurrentColumn + blockColumn;
+                    
+                    if (boardLine >= 0 && boardLine < _boardModel.NumLines && boardColumn >= 0 && boardColumn < _boardModel.NumColumns)
+                    {
+                        _boardModel.Blocks[boardLine, boardColumn] = blockType;
+                    }
                 }
             }
 
