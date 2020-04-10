@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Tetris.Factories;
 using Tetris.Models;
 using Tetris.Utils;
@@ -114,10 +115,86 @@ namespace Tetris.Controllers
                 DrawTetromino(_currentTetromino);
             }
 
-            // Skip a frame so we can reset our input
-            yield return null;
+            List<int> clearedLines = GetClearedLines();
+            if (clearedLines.Count > 0)
+            {
+                yield return StartCoroutine(AnimateClearedLines(clearedLines));
+                RemoveClearedLines(clearedLines);
+            }
 
             yield return StartCoroutine(SpawnTetromino());
+        }
+
+        private List<int> GetClearedLines()
+        {
+            List<int> clearedLines = new List<int>();
+            for (int line = _boardModel.NumLines - 1; line >= 0; line--)
+            {
+                bool hasEmptyBlock = false;
+                for (int column = 0; column < _boardModel.NumColumns; column++)
+                {
+                    if (_boardModel.Blocks[line, column] == Constants.NoPiece)
+                    {
+                        hasEmptyBlock = true;
+                        break;
+                    }
+                }
+
+                if (!hasEmptyBlock)
+                {
+                    clearedLines.Add(line);
+                }
+            }
+
+            return clearedLines;
+        }
+
+        private void RemoveClearedLines(List<int> clearedLines)
+        {
+            List<int[]> listBlocks = new List<int[]>();
+            for (int line = 0; line < _boardModel.NumLines; line++)
+            {
+                int[] columns = new int[_boardModel.NumColumns];
+                for (int column = 0; column < _boardModel.NumColumns; column++)
+                {
+                    columns[column] = _boardModel.Blocks[line, column];
+                }
+                listBlocks.Add(columns);
+            }
+
+            int[] emptyLine = new int[_boardModel.NumColumns];
+
+            for (int i = 0; i < clearedLines.Count; i++)
+            {
+                int clearedLine = clearedLines[i] + i;
+                listBlocks.RemoveAt(clearedLine);
+                listBlocks.Insert(0, emptyLine);
+            }
+            
+            for (int line = 0; line < _boardModel.NumLines; line++)
+            {
+                for (int column = 0; column < _boardModel.NumColumns; column++)
+                {
+                    _boardModel.Blocks[line, column] = listBlocks[line][column];
+                }
+            }
+
+            _boardView.UpdateView(_boardModel, _blockMaterials);
+        }
+
+        private IEnumerator AnimateClearedLines(List<int> clearedLines)
+        {
+            for (int i = 0; i < clearedLines.Count; i++)
+            {
+                int line = clearedLines[i];
+                for (int column = 0; column < _boardModel.NumColumns; column++)
+                {
+                    _boardModel.Blocks[line, column] = Constants.NoPiece;
+                }
+                _boardView.UpdateView(_boardModel, line, 0, line + 1, _boardModel.NumColumns, _blockMaterials);
+            }
+
+            yield return new WaitForSeconds(1f);
         }
 
         private IEnumerator ControlTetromino()
