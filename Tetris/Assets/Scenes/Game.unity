@@ -162,6 +162,9 @@ MonoBehaviour:
   _greenBlockMat: {fileID: 2100000, guid: e85889205a8d70c4eafdc19f97705813, type: 2}
   _purpleBlockMat: {fileID: 2100000, guid: 82f124754ff55d54e8d318cb118e78b7, type: 2}
   _redBlockMat: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
+  _grayMat: {fileID: 2100000, guid: dd0780a4c6c34c54d8f759916c7b9bcb, type: 2}
+  _clearLineAnimationTime: 0.5
+  _blinkAnimationTime: 0.125
 --- !u!4 &1138700974
 Transform:
   m_ObjectHideFlags: 0

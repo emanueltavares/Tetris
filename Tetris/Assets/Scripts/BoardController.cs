@@ -11,7 +11,7 @@ namespace Tetris.Controllers
     {
         // Serialized Fields        
         [SerializeField] private float _applyGravityInterval = 1f;
-        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;
+        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;        
 
         [Header("Tetrominos Colors")]
         [SerializeField] private Material _noBlockMat;                                                     // GREY is the color of the empty block
@@ -22,6 +22,11 @@ namespace Tetris.Controllers
         [SerializeField] private Material _greenBlockMat;                                                  // GREEN is the color of the S piece
         [SerializeField] private Material _purpleBlockMat;                                                 // PURPLE is the color of the T piece
         [SerializeField] private Material _redBlockMat;                                                    // RED is the color of the Z piece
+
+        [Header("Animation")]
+        [SerializeField] private Material _grayMat;
+        [SerializeField] private float _clearLineAnimationTime = 1f;
+        [SerializeField] private float _blinkAnimationTime = 0.125f;
 
         // Private Fields
         private IBoardFactory _boardFactory;
@@ -184,17 +189,31 @@ namespace Tetris.Controllers
 
         private IEnumerator AnimateClearedLines(List<int> clearedLines)
         {
-            for (int i = 0; i < clearedLines.Count; i++)
+            // blink animation
+            bool blink = false;
+            for (float elapsedTime = 0; elapsedTime < _clearLineAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _clearLineAnimationTime, _blinkAnimationTime))
             {
-                int line = clearedLines[i];
-                for (int column = 0; column < _boardModel.NumColumns; column++)
+                for (int i = 0; i < clearedLines.Count; i++)
                 {
-                    _boardModel.Blocks[line, column] = Constants.NoPiece;
+                    int line = clearedLines[i];
+                    for (int column = 0; column < _boardModel.NumColumns; column++)
+                    {
+                        if (blink)
+                        {
+                            _boardView.Blocks[line, column].sharedMaterial = _grayMat;
+                        }
+                        else
+                        {
+                            int blockType = _boardModel.Blocks[line, column];
+                            _boardView.Blocks[line, column].sharedMaterial = _blockMaterials[blockType];
+                        }
+                    }
                 }
-                _boardView.UpdateView(_boardModel, line, 0, line + 1, _boardModel.NumColumns, _blockMaterials);
-            }
 
-            yield return new WaitForSeconds(1f);
+                blink = !blink;
+
+                yield return new WaitForSeconds(_blinkAnimationTime);
+            }
         }
 
         private IEnumerator ControlTetromino()
