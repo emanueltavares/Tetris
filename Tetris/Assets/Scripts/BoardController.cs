@@ -65,9 +65,8 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
-            
-            int randomPieceType = _random.Next(Constants.IPieceType, Constants.ZPieceType + 1);
-            _currentTetromino = _tetrominosFactory.GetPiece(0, 3, randomPieceType);
+            //int randomPieceType = _random.Next(Constants.IPieceType, Constants.ZPieceType + 1);
+            _currentTetromino = _tetrominosFactory.GetNextPiece(0, 3);
 
             if (ValidateTetrominoPosition(_currentTetromino))
             {
