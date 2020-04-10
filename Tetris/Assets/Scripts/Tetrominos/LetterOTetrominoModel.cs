@@ -5,11 +5,12 @@ namespace Tetris.Models
     public class LetterOTetrominoModel : ITetrominoModel
     {
         // Constants
-        private const int LetterONumLines = 2;
+        private const int LetterONumLines = 3;
         private const int LetterONumColums = 2;
 
         private static readonly int[,] Vertical = new int[LetterONumLines, LetterONumColums]
             {
+                {0,                    0 },
                 {Constants.OPieceType, Constants.OPieceType},
                 {Constants.OPieceType, Constants.OPieceType}
             };
