@@ -10,7 +10,7 @@ namespace Tetris.Models
         public int[,] Blocks { get; private set; }
 
         public class Builder
-        {            
+        {
             public IBoardModel Build(int maxNumLines, int maxNumColumns)
             {
                 int[,] blocks = new int[maxNumLines, maxNumColumns];
@@ -76,6 +76,7 @@ namespace Tetris.Models
 
                 float halfBoardWidth = blockScale * (boardModel.NumColumns - 1) * 0.5f;
                 float halfBoardHeight = blockScale * (boardModel.NumLines - 1) * 0.5f;
+                Vector3 localScale = new Vector3(blockScale, blockScale, blockScale - Mathf.Epsilon);
 
                 // Create Board View from Model
                 for (int line = 0; line < boardModel.NumLines; line++)
@@ -88,12 +89,11 @@ namespace Tetris.Models
                         float blockX = Mathf.Lerp(-halfBoardWidth, halfBoardWidth, normalizedColumn);
                         float blockY = Mathf.Lerp(halfBoardHeight, -halfBoardHeight, normalizedLine);
                         Vector3 localPosition = new Vector3(blockX, blockY, 0);
-                        Vector3 localScale = new Vector3(blockScale, blockScale, blockScale);
 
                         // Create a transform
                         Renderer blockInstance = Object.Instantiate(blockPrefab, parent);
                         blockInstance.transform.localPosition = localPosition;
-                        blockInstance.transform.localScale = localScale;                        
+                        blockInstance.transform.localScale = localScale;
 
                         int blockType = boardModel.Blocks[line, col];
                         blockInstance.sharedMaterial = blockMaterials[blockType];

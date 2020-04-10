@@ -225,41 +225,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: m_BackGroundColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: m_ClearFlags
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: orthographic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776894032933864490, guid: 022d19175d9c5c747904330142f132d7,
-        type: 3}
-      propertyPath: orthographic size
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1776894032933864493, guid: 022d19175d9c5c747904330142f132d7,
         type: 3}
       propertyPath: m_LocalPosition.x
