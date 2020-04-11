@@ -17,6 +17,8 @@ namespace Tetris.Utils
         public const int MaxNumLinesPreview = 2;
         public const int MaxNumColumnsPreview = 4;
 
+        public const string GameScene = "Game";
+
         private static readonly System.Random _random = new System.Random();
 
         public static int GetRandomValue(int maxValue)
