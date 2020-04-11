@@ -11,3 +11,5 @@ TODO (in order of priority):
 - Wall kick
 - Improve User Interface
 - Add sound effects
+- Add Start menu
+- Add Pause menu
