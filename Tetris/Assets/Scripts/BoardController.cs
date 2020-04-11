@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tetris.Factories;
 using Tetris.Models;
+using Tetris.Utils;
 using Tetris.Views;
 using UnityEngine;
 
@@ -105,9 +106,7 @@ namespace Tetris.Controllers
                 _isHoldPiece = true;
             }
 
-            //ClearTetromino(_ghostTetromino);
-
-            if (CanPlaceTetromino(_currentTetromino))
+            if (CanPlaceTetrominoWithWallKick(_currentTetromino))
             {
                 ClearTetromino(_currentTetromino);
 
@@ -376,7 +375,7 @@ namespace Tetris.Controllers
                 if (_inputController.RotateClockwise)
                 {
                     _currentTetromino.Rotation += 1;
-                    if (!CanPlaceTetromino(_currentTetromino))
+                    if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
                     {
                         // Disable previous rotation
                         _currentTetromino.Rotation -= 1;
@@ -387,7 +386,7 @@ namespace Tetris.Controllers
                 if (_inputController.RotateCounterClockwise)
                 {
                     _currentTetromino.Rotation -= 1;
-                    if (!CanPlaceTetromino(_currentTetromino))
+                    if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
                     {
                         // Disable previous rotation
                         _currentTetromino.Rotation += 1;
@@ -427,6 +426,50 @@ namespace Tetris.Controllers
             int endLine = tetromino.CurrentLine + tetromino.NumLines;
             int endColumn = tetromino.CurrentColumn + tetromino.NumColumns;
             BoardView.UpdateView(BoardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blocks);
+        }
+
+        private bool CanPlaceTetrominoWithWallKick(ITetrominoModel tetromino)
+        {
+            // first try
+            int currentColumnCache = tetromino.CurrentColumn;
+            if (!CanPlaceTetromino(tetromino))
+            {
+                // second try
+                tetromino.CurrentColumn -= 1;
+                if (!CanPlaceTetromino(tetromino))
+                {
+                    // additional try that can only be used for I Pieces
+                    if (tetromino.PieceType == TetrominoUtils.IPieceType)
+                    {
+                        tetromino.CurrentColumn -= 1;
+                        if (CanPlaceTetromino(tetromino))
+                        {
+                            return true;
+                        }
+                    }
+
+                    // last try
+                    tetromino.CurrentColumn  = currentColumnCache;
+                    tetromino.CurrentColumn += 1;
+                    if (!CanPlaceTetromino(tetromino))
+                    {
+                        // additional try that can only be used for I Pieces
+                        if (tetromino.PieceType == TetrominoUtils.IPieceType)
+                        {
+                            tetromino.CurrentColumn += 1;
+                            if (CanPlaceTetromino(tetromino))
+                            {
+                                return true;
+                            }
+                        }
+
+                        tetromino.CurrentColumn = currentColumnCache;
+                        return false;
+                    }
+
+                }
+            }
+            return true;
         }
 
         private bool CanPlaceTetromino(ITetrominoModel tetromino)
