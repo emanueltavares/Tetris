@@ -14,9 +14,11 @@ namespace Tetris.Controllers
 
         // Private Fields
         private float _holdInputStartTime = 0f;
+        private ILevelController _levelController;
+        private IBoardController _boardController;
 
         // Properties
-        public float HoldInputMaxTime { get; set; }                                  // max time in milliseconds that you can hold the direction buttons before moving the tetromino again
+        public float HoldInputMaxTime { get; private set; }                                  // max time in milliseconds that you can hold the direction buttons before moving the tetromino again
         public bool MoveLeft { get; private set; }
         public bool MoveRight { get; private set; }
         public bool RotateClockwise { get; private set; }
@@ -28,8 +30,25 @@ namespace Tetris.Controllers
 
         public bool HoldPiece { get; private set; }
 
+        protected virtual void OnEnable()
+        {
+            if (_levelController == null)
+            {
+                _levelController = GetComponent<ILevelController>();
+            }
+
+            if (_boardController == null)
+            {
+                _boardController = GetComponent<IBoardController>();
+            }
+
+            // Initializes level controller
+            _levelController.AddClearedLines(0);
+            HoldInputMaxTime = _levelController.GravityInterval / _boardController.BoardModel.NumColumns;
+        }
+
         protected virtual void Update()
-        {            
+        {
             RotateClockwise = Input.GetButtonDown(_rotateClockwiseButtonName);
             RotateCounterClockwise = Input.GetButtonDown(_rotateCounterClockwiseButtonName);
             DropHard = Input.GetButtonDown(_dropHardButtonName);
@@ -74,7 +93,7 @@ namespace Tetris.Controllers
 
     public interface IInputController
     {
-        float HoldInputMaxTime { get; set; }
+        float HoldInputMaxTime { get; }
         bool MoveLeft { get; }
         bool MoveRight { get; }
         bool RotateCounterClockwise { get; }

@@ -17,6 +17,7 @@ namespace Tetris.Controllers
 
         // Constants
         private const int BaseScore = 40;
+        private const int ClearedLinesPerLevel = 10;
 
         // Properties
         public float GravityInterval { get; private set; }
@@ -25,23 +26,12 @@ namespace Tetris.Controllers
         public int TotalScore { get; private set; }
         public int Level { get; private set; }
 
-        protected virtual void OnEnable()
-        {
-            TotalScore = 0;
-            TotalClearedLines = 0;
-            Level = Mathf.FloorToInt(TotalClearedLines / 10f) + _startLevel;
-            GravityInterval = _startGravityInterval / (Level + 1);
-
-            _levelText.text = Level.ToString();
-            _clearedLinesText.text = TotalClearedLines.ToString();
-            _totalScore.text = TotalScore.ToString();
-        }
-
         public void AddClearedLines(int clearedLines)
         {
             TotalClearedLines += clearedLines;
 
-            Level = Mathf.FloorToInt(TotalClearedLines / 10f) + _startLevel;
+            Level = Mathf.FloorToInt(TotalClearedLines / (float)ClearedLinesPerLevel) + _startLevel;
+            GravityInterval = _startGravityInterval / (Level + 1);
 
             int score = (BaseScore * clearedLines) * (Level + 1);
             TotalScore += score;
@@ -49,8 +39,6 @@ namespace Tetris.Controllers
             _levelText.text = Level.ToString();
             _clearedLinesText.text = TotalClearedLines.ToString();
             _totalScore.text = TotalScore.ToString();
-
-            GravityInterval = _startGravityInterval / (Level + 1);
         }
     }
 

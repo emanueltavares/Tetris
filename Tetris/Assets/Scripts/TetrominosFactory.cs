@@ -29,11 +29,21 @@ namespace Tetris.Factories
         private System.Random _random = new System.Random();
         private IBoardFactory _boardFactory;
         private (IBoardModel, IBoardView)[] _nextPieces = new (IBoardModel, IBoardView)[0];
+        private bool _initialized;
 
         // Properties
         public List<int> NextPieceTypes { get; private set; } = new List<int>();
 
         protected virtual void OnEnable()
+        {
+            if (!_initialized)
+            {
+                Initialize();
+                _initialized = true;
+            }
+        }
+
+        private void Initialize()
         {
             int pieceTypesIndex = _random.Next(PieceTypes.Count);
             int randomPieceType = PieceTypes[pieceTypesIndex];
@@ -52,11 +62,16 @@ namespace Tetris.Factories
             }
 
             CreateBoards();
-            DrawNextPieces();
         }
 
         public ITetrominoModel GetNextPiece(int startLine, int startColumn)
         {
+            if (!_initialized)
+            {
+                Initialize();
+                _initialized = true;
+            }
+
             int pieceType = NextPieceTypes[0];
             
             // get next piece type
