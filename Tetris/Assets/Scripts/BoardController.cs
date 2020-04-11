@@ -29,6 +29,7 @@ namespace Tetris.Controllers
         [SerializeField] private float _blockScale = 1f;
 
         // Private Fields
+        private ISoundController _soundController;
         private IBoardFactory _boardFactory;
         private IHoldController _holdController;
         private IInputController _inputController;
@@ -80,6 +81,11 @@ namespace Tetris.Controllers
                     _holdController = GetComponent<IHoldController>();
                 }
 
+                if (_soundController == null)
+                {
+                    _soundController = GetComponent<ISoundController>();
+                }
+
                 _pausePanel.SetActive(IsPaused);
 
                 IsInitialized = true;
@@ -101,6 +107,9 @@ namespace Tetris.Controllers
             }
             else
             {
+                // Play this as a
+                _soundController.PlayHoldTetromino();
+
                 int previousHoldPieceType = _holdController.Hold(_currentTetromino.PieceType);
                 if (previousHoldPieceType > Utils.TetrominoUtils.NoPiece)
                 {
@@ -138,6 +147,8 @@ namespace Tetris.Controllers
         {
             ClearTetromino(_currentTetromino);
             DrawTetromino(_currentTetromino);
+
+            yield return new WaitForSeconds(1f);
 
             // Game Over
             _gameOverPanel.SetActive(true);
@@ -237,7 +248,6 @@ namespace Tetris.Controllers
                     DrawGhostTetromino(_ghostTetromino);
                     DrawTetromino(_currentTetromino);
                 }
-
             }
 
             if (!useHoldPiece)
@@ -251,6 +261,8 @@ namespace Tetris.Controllers
                 }
                 else
                 {
+                    _soundController.PlayPlaceTetromino();
+
                     // Add a frame to refresh input
                     yield return null;
                 }
@@ -318,6 +330,9 @@ namespace Tetris.Controllers
 
         private IEnumerator AnimateClearedLines(List<int> clearedLines)
         {
+            // Play sound
+            _soundController.PlayClearLine();
+
             // blink animation
             bool blink = true;
             for (float elapsedTime = 0; elapsedTime < _clearLineAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _clearLineAnimationTime, _clearLineAnimationTime * _clearLineMultiplier))
@@ -398,6 +413,10 @@ namespace Tetris.Controllers
                             // Disable previous move
                             _currentTetromino.CurrentColumn += 1;
                         }
+                        else
+                        {
+                            _soundController.PlayMoveTetromino();
+                        }
                     }
 
                     if (_inputController.MoveRight)
@@ -407,6 +426,10 @@ namespace Tetris.Controllers
                         {
                             // Disable previous move
                             _currentTetromino.CurrentColumn -= 1;
+                        }
+                        else
+                        {
+                            _soundController.PlayMoveTetromino();
                         }
                     }
 
@@ -418,7 +441,10 @@ namespace Tetris.Controllers
                             // Disable previous rotation
                             _currentTetromino.Rotation -= 1;
                         }
-
+                        else
+                        {
+                            _soundController.PlayRotateTetromino();
+                        }
                     }
 
                     if (_inputController.RotateCounterClockwise)
@@ -428,6 +454,10 @@ namespace Tetris.Controllers
                         {
                             // Disable previous rotation
                             _currentTetromino.Rotation += 1;
+                        }
+                        else
+                        {
+                            _soundController.PlayRotateTetromino();
                         }
                     }
 
