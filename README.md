@@ -7,7 +7,7 @@ TODO (in order of priority):
 - ~Display Score~
 - ~Display Level~
 - ~Display Lines cleared~
-- Ghost Piece
+- ~Ghost Piece~
 - Wall kick
 - Improve User Interface
 - Add sound effects
