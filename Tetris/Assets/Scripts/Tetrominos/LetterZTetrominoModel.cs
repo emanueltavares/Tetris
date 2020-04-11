@@ -1,6 +1,4 @@
-﻿using Tetris.Utils;
-
-namespace Tetris.Models
+﻿namespace Tetris.Models
 {
     public class LetterZTetrominoModel : ITetrominoModel
     {
@@ -13,28 +11,29 @@ namespace Tetris.Models
         private static readonly int[,] Horizontal = new int[LetterZNumLines, LetterZNumColumns]
             {
                 { 0,                    0,                    0                    },
-                { Constants.ZPieceType, Constants.ZPieceType, 0                    },
-                { 0,                    Constants.ZPieceType, Constants.ZPieceType }
+                { Utils.TetrominoUtils.ZPieceType, Utils.TetrominoUtils.ZPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.ZPieceType, Utils.TetrominoUtils.ZPieceType }
                 
             };
         private static readonly int[,] Vertical = new int[LetterZNumLines, LetterZNumColumns]
             {
-                { 0,                    Constants.ZPieceType, 0                    },
-                { Constants.ZPieceType, Constants.ZPieceType, 0                    },
-                { Constants.ZPieceType,  0,                   0                    }
+                { 0,                    Utils.TetrominoUtils.ZPieceType, 0                    },
+                { Utils.TetrominoUtils.ZPieceType, Utils.TetrominoUtils.ZPieceType, 0                    },
+                { Utils.TetrominoUtils.ZPieceType,  0,                   0                    }
             };
 
 
         // Properties
+        public int Type => Utils.TetrominoUtils.ZPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterZNumLines;
         public int NumColumns => LetterZNumColumns;
         public int[,] Blocks { get; private set; }
-        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        public int[,] BlocksPreview => new int[Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview]
         {
-             { 0, Constants.ZPieceType, Constants.ZPieceType, 0                    },
-             { 0, 0,                    Constants.ZPieceType, Constants.ZPieceType }
+             { 0, Utils.TetrominoUtils.ZPieceType, Utils.TetrominoUtils.ZPieceType, 0                    },
+             { 0, 0,                    Utils.TetrominoUtils.ZPieceType, Utils.TetrominoUtils.ZPieceType }
         };
 
         // Private

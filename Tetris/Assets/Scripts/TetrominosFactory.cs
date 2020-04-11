@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tetris.Models;
 using Tetris.Utils;
+using Tetris.Views;
 using UnityEngine;
 
 namespace Tetris.Factories
@@ -16,13 +17,13 @@ namespace Tetris.Factories
         // Constants
         private static readonly List<int> PieceTypes = new List<int>()
         {
-            Constants.IPieceType,
-            Constants.JPieceType,
-            Constants.LPieceType,
-            Constants.SPieceType,
-            Constants.OPieceType,
-            Constants.TPieceType,
-            Constants.ZPieceType
+            Utils.TetrominoUtils.IPieceType,
+            Utils.TetrominoUtils.JPieceType,
+            Utils.TetrominoUtils.LPieceType,
+            Utils.TetrominoUtils.SPieceType,
+            Utils.TetrominoUtils.OPieceType,
+            Utils.TetrominoUtils.TPieceType,
+            Utils.TetrominoUtils.ZPieceType
         };
 
         // Private 
@@ -58,7 +59,7 @@ namespace Tetris.Factories
         public ITetrominoModel GetNextPiece(int startLine, int startColumn)
         {
             int pieceType = NextPieceTypes[0];
-
+            
             // get next piece type
             List<int> pieceTypes = new List<int>(PieceTypes);
             pieceTypes.Remove(NextPieceTypes[NextPieceTypes.Count - 1]);
@@ -69,34 +70,16 @@ namespace Tetris.Factories
 
             DrawNextPieces();
 
+            return GetNextPiece(pieceType, startLine, startColumn);
+        }
+
+        public ITetrominoModel GetNextPiece(int pieceType, int startLine, int startColumn)
+        {
             // next tetromino
-            ITetrominoModel tetromino = GetTetromino(pieceType);
+            ITetrominoModel tetromino = TetrominoUtils.GetTetromino(pieceType);
             tetromino.CurrentLine = startLine;
             tetromino.CurrentColumn = startColumn;
             return tetromino;
-        }
-
-        private ITetrominoModel GetTetromino(int pieceType)
-        {
-            switch (pieceType)
-            {
-                case Constants.OPieceType:
-                    return new LetterOTetrominoModel();
-                case Constants.LPieceType:
-                    return new LetterLTetrominoModel();
-                case Constants.SPieceType:
-                    return new LetterSTetrominoModel();
-                case Constants.TPieceType:
-                    return new LetterTTetrominoModel();
-                case Constants.ZPieceType:
-                    return new LetterZTetrominoModel();
-                case Constants.JPieceType:
-                    return new LetterJTetrominoModel();
-                case Constants.IPieceType:
-                    return new LetterITetrominoModel();
-                default:
-                    return new LetterITetrominoModel();
-            }
         }
 
         private void CreateBoards()
@@ -114,8 +97,8 @@ namespace Tetris.Factories
                                                                          _blocks.Materials,
                                                                          _blockScale,
                                                                          nextPiecesParent,
-                                                                         Constants.MaxNumLinesPreview,
-                                                                         Constants.MaxNumColumnsPreview);
+                                                                         Utils.TetrominoUtils.MaxNumLinesPreview,
+                                                                         Utils.TetrominoUtils.MaxNumColumnsPreview);
                 _nextPieces[i] = board;
             }
         }
@@ -129,26 +112,31 @@ namespace Tetris.Factories
                 IBoardModel boardModel = _nextPieces[i].Item1;
                 IBoardView boardView = _nextPieces[i].Item2;
 
-                ITetrominoModel tetromino = GetTetromino(nextPieceType);
-
-                for (int line = 0; line < Constants.MaxNumLinesPreview; line++)
-                {
-                    for (int column = 0; column < Constants.MaxNumColumnsPreview; column++)
-                    {
-                        int blockType = tetromino.BlocksPreview[line, column];
-                        boardModel.Blocks[line, column] = blockType;
-                    }
-                }
-
-                // Update view after showing tetromino
-                boardView.UpdateView(boardModel, _blocks.Materials);
+                ITetrominoModel tetromino = TetrominoUtils.GetTetromino(nextPieceType);
+                DrawTetromino(boardModel, boardView, tetromino);
             }
         }
+
+        private void DrawTetromino(IBoardModel boardModel, IBoardView boardView, ITetrominoModel tetromino)
+        {
+            for (int line = 0; line < boardModel.NumLines; line++)
+            {
+                for (int column = 0; column < boardModel.NumColumns; column++)
+                {
+                    int blockType = tetromino.BlocksPreview[line, column];
+                    boardModel.Blocks[line, column] = blockType;
+                }
+            }
+
+            // Update view after showing tetromino
+            boardView.UpdateView(boardModel, _blocks.Materials);
+        }        
     }
 
     public interface ITetrominosFactory
     {
         List<int> NextPieceTypes { get; }
         ITetrominoModel GetNextPiece(int startLine, int startColumn);
+        ITetrominoModel GetNextPiece(int pieceType, int startLine, int startColumn);
     }
 }

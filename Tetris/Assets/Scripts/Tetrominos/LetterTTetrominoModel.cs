@@ -1,6 +1,4 @@
-﻿using Tetris.Utils;
-
-namespace Tetris.Models
+﻿namespace Tetris.Models
 {
     public class LetterTTetrominoModel : ITetrominoModel
     {
@@ -13,42 +11,43 @@ namespace Tetris.Models
         private static readonly int[,] First = new int[LetterTNumLines, LetterTNumColumns]
             {
                 { 0,                    0,                    0                    },
-                { Constants.TPieceType, Constants.TPieceType, Constants.TPieceType },
-                { 0,                    Constants.TPieceType, 0                    }
+                { Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    }
             };
 
         private static readonly int[,] Second = new int[LetterTNumLines, LetterTNumColumns]
             {
-                { 0,                    Constants.TPieceType, 0                    },
-                { Constants.TPieceType, Constants.TPieceType, 0                    },
-                { 0,                    Constants.TPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    },
+                { Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    },
                 
             };
 
         private static readonly int[,] Third = new int[LetterTNumLines, LetterTNumColumns]
             {
-                { 0,                    Constants.TPieceType, 0                    },
-                { Constants.TPieceType, Constants.TPieceType, Constants.TPieceType },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    },
+                { Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType },
                 { 0,                    0,                    0                    }
             };
 
         private static readonly int[,] Fourth = new int[LetterTNumLines, LetterTNumColumns]
             {
-                { 0,                    Constants.TPieceType, 0                    },
-                { 0,                    Constants.TPieceType, Constants.TPieceType },
-                { 0,                    Constants.TPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType },
+                { 0,                    Utils.TetrominoUtils.TPieceType, 0                    },
             };
 
         // Properties
+        public int Type => Utils.TetrominoUtils.TPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterTNumLines;
         public int NumColumns => LetterTNumColumns;
         public int[,] Blocks { get; private set; }
-        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        public int[,] BlocksPreview => new int[Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview]
         {
-            { 0, Constants.TPieceType, Constants.TPieceType, Constants.TPieceType },
-            { 0,  0,                   Constants.TPieceType, 0                    }
+            { 0, Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType, Utils.TetrominoUtils.TPieceType },
+            { 0,  0,                   Utils.TetrominoUtils.TPieceType, 0                    }
         };
 
         // Private

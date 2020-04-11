@@ -1,4 +1,5 @@
 ﻿using Tetris.Utils;
+using Tetris.Views;
 using UnityEngine;
 
 namespace Tetris.Models
@@ -18,7 +19,7 @@ namespace Tetris.Models
                 {
                     for (int col = 0; col < maxNumColumns; col++)
                     {
-                        blocks[line, col] = Constants.NoPiece;
+                        blocks[line, col] = Utils.TetrominoUtils.NoPiece;
                         //blocks[line, col] = Random.Range(0, 8);
                     }
                 }

@@ -1,6 +1,4 @@
-﻿using Tetris.Utils;
-
-namespace Tetris.Models
+﻿namespace Tetris.Models
 {
     public class LetterSTetrominoModel : ITetrominoModel
     {
@@ -13,27 +11,28 @@ namespace Tetris.Models
         private static readonly int[,] Horizontal = new int[LetterSNumLines, LetterSNumColumns]
             {
                 { 0,                    0,                    0                    },
-                { 0,                    Constants.SPieceType, Constants.SPieceType },
-                { Constants.SPieceType, Constants.SPieceType, 0                    }
+                { 0,                    Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType },
+                { Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType, 0                    }
             };
         private static readonly int[,] Vertical = new int[LetterSNumLines, LetterSNumColumns]
             {
-                { Constants.SPieceType,  0,                   0                    },
-                { Constants.SPieceType, Constants.SPieceType, 0                    },
-                { 0,                    Constants.SPieceType, 0                    }
+                { Utils.TetrominoUtils.SPieceType,  0,                   0                    },
+                { Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType, 0                    },
+                { 0,                    Utils.TetrominoUtils.SPieceType, 0                    }
             };
-        
+
 
         // Properties
+        public int Type => Utils.TetrominoUtils.SPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterSNumLines;
         public int NumColumns => LetterSNumColumns;
         public int[,] Blocks { get; private set; }
-        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        public int[,] BlocksPreview => new int[Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview]
         {
-            { 0,    0,                    Constants.SPieceType, Constants.SPieceType },
-            { 0,    Constants.SPieceType, Constants.SPieceType, 0                    }
+            { 0,    0,                    Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType },
+            { 0,    Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType, 0                    }
         };
 
         // Private

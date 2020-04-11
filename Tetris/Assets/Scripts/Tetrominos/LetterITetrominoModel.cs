@@ -1,6 +1,4 @@
-﻿using Tetris.Utils;
-
-namespace Tetris.Models
+﻿namespace Tetris.Models
 {
     public class LetterITetrominoModel : ITetrominoModel
     {
@@ -12,28 +10,29 @@ namespace Tetris.Models
         // Readonlies
         private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColumns]
             {
-                {0, 0, Constants.IPieceType, 0 },
-                {0, 0, Constants.IPieceType, 0 },
-                {0, 0, Constants.IPieceType, 0 },
-                {0, 0, Constants.IPieceType, 0 }
+                {0, 0, Utils.TetrominoUtils.IPieceType, 0 },
+                {0, 0, Utils.TetrominoUtils.IPieceType, 0 },
+                {0, 0, Utils.TetrominoUtils.IPieceType, 0 },
+                {0, 0, Utils.TetrominoUtils.IPieceType, 0 }
             };
         private static readonly int[,] Horizontal = new int[LetterINumLines, LetterINumColumns]
             {
                 {0, 0, 0, 0 },
-                {Constants.IPieceType, Constants.IPieceType, Constants.IPieceType, Constants.IPieceType },
+                { Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType },
                 {0, 0, 0, 0 },
                 {0, 0, 0, 0 }
             };
 
         // Properties
+        public int Type => Utils.TetrominoUtils.IPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterINumLines;
         public int NumColumns => LetterINumColumns;
         public int[,] Blocks { get; private set; }
-        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview] 
+        public int[,] BlocksPreview => new int[Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview] 
         {
-            {Constants.IPieceType, Constants.IPieceType, Constants.IPieceType, Constants.IPieceType },
+            { Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType },
             {0, 0, 0, 0 }
         };
 

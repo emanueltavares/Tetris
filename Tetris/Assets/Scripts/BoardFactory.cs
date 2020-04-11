@@ -1,4 +1,5 @@
 ﻿using Tetris.Models;
+using Tetris.Views;
 using UnityEngine;
 
 namespace Tetris.Factories
