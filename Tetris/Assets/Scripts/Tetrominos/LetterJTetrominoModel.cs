@@ -14,7 +14,7 @@ namespace Tetris.Models
             {
                 { 0,                    0,                    0                    },
                 { Constants.JPieceType, Constants.JPieceType, Constants.JPieceType },
-                { 0,                    0,                    Constants.JPieceType }                
+                { 0,                    0,                    Constants.JPieceType }
             };
 
         private static readonly int[,] Second = new int[LetterJNumLines, LetterJNumColumns]
@@ -44,6 +44,11 @@ namespace Tetris.Models
         public int NumLines => LetterJNumLines;
         public int NumColumns => LetterJNumColumns;
         public int[,] Blocks { get; private set; }
+        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        {
+            { 0, Constants.JPieceType, Constants.JPieceType, Constants.JPieceType },
+            { 0, 0,                    0,                    Constants.JPieceType }
+        };
 
         // Private
         private int _currentRotation = 0;

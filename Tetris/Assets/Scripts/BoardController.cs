@@ -10,46 +10,39 @@ namespace Tetris.Controllers
     public partial class BoardController : MonoBehaviour
     {
         // Serialized Fields        
+        [Header("Gameplay")]
         [SerializeField] private float _applyGravityInterval = 1f;
-        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;        
-
-        [Header("Tetrominos Colors")]
-        [SerializeField] private Material _noBlockMat;                                                     // GREY is the color of the empty block
-        [SerializeField] private Material _lightBlueBlockMat;                                              // LIGHT BLUE is the color of the I piece
-        [SerializeField] private Material _darkBlueBlockMat;                                               // DARK BLUE is the color of the J piece
-        [SerializeField] private Material _orangeBlockMat;                                                 // ORANGE is the color of the L piece
-        [SerializeField] private Material _yellowBlockMat;                                                 // YELLOW is the color of the O piece
-        [SerializeField] private Material _greenBlockMat;                                                  // GREEN is the color of the S piece
-        [SerializeField] private Material _purpleBlockMat;                                                 // PURPLE is the color of the T piece
-        [SerializeField] private Material _redBlockMat;                                                    // RED is the color of the Z piece
+        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;
 
         [Header("Animation")]
-        [SerializeField] private Material _grayMat;
         [SerializeField] private float _clearLineAnimationTime = 1f;
-        [SerializeField] private float _blinkAnimationTime = 0.125f;
+        [Range(0f, 1f)] [SerializeField] private float _clearLineMultiplier = 0.125f;
+
+        [Header("Block Creation")]
+        [SerializeField] private BlocksScriptableObject _blocks;
+        [SerializeField] private Renderer _blockPrefab;
+        [SerializeField] private Transform _blocksParent;
+        [SerializeField] private int _maxNumLines;                                              // max number of lines of our board
+        [SerializeField] private int _maxNumColumns;                                            // max number of columns of our board
+        [SerializeField] private float _blockScale = 1f;
 
         // Private Fields
         private IBoardFactory _boardFactory;
         private IInputController _inputController;
         private IBoardModel _boardModel;
         private IBoardView _boardView;
-        private ITetrominosFactory _tetrominosFactory = new TetrominosFactory();
+        private ITetrominosFactory _tetrominosFactory;
         private ITetrominoModel _currentTetromino;
-        private Material[] _blockMaterials;
-
-        private System.Random _random = new System.Random();
 
         protected virtual void OnEnable()
         {
-            // Initialize block materials
-            _blockMaterials = new Material[8] { _noBlockMat, _lightBlueBlockMat, _darkBlueBlockMat, _orangeBlockMat, _yellowBlockMat, _greenBlockMat, _purpleBlockMat, _redBlockMat };
 
             // Initialize board model and board view
             if (_boardFactory == null)
             {
                 _boardFactory = GetComponent<IBoardFactory>();
             }
-            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockMaterials);
+            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockPrefab, _blocks.Materials, _blockScale, _blocksParent, _maxNumLines, _maxNumColumns);
 
             // Initialized hold input max time
             if (_inputController == null)
@@ -65,7 +58,10 @@ namespace Tetris.Controllers
         private IEnumerator SpawnTetromino()
         {
             // Create the first tetromino
-            //int randomPieceType = _random.Next(Constants.IPieceType, Constants.ZPieceType + 1);
+            if (_tetrominosFactory == null)
+            {
+                _tetrominosFactory = GetComponent<ITetrominosFactory>();
+            }
             _currentTetromino = _tetrominosFactory.GetNextPiece(0, 3);
 
             if (ValidateTetrominoPosition(_currentTetromino))
@@ -174,7 +170,7 @@ namespace Tetris.Controllers
                 listBlocks.RemoveAt(clearedLine);
                 listBlocks.Insert(0, emptyLine);
             }
-            
+
             for (int line = 0; line < _boardModel.NumLines; line++)
             {
                 for (int column = 0; column < _boardModel.NumColumns; column++)
@@ -183,14 +179,14 @@ namespace Tetris.Controllers
                 }
             }
 
-            _boardView.UpdateView(_boardModel, _blockMaterials);
+            _boardView.UpdateView(_boardModel, _blocks.Materials);
         }
 
         private IEnumerator AnimateClearedLines(List<int> clearedLines)
         {
             // blink animation
-            bool blink = false;
-            for (float elapsedTime = 0; elapsedTime < _clearLineAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _clearLineAnimationTime, _blinkAnimationTime))
+            bool blink = true;
+            for (float elapsedTime = 0; elapsedTime < _clearLineAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _clearLineAnimationTime, _clearLineAnimationTime * _clearLineMultiplier))
             {
                 for (int i = 0; i < clearedLines.Count; i++)
                 {
@@ -199,19 +195,19 @@ namespace Tetris.Controllers
                     {
                         if (blink)
                         {
-                            _boardView.Blocks[line, column].sharedMaterial = _grayMat;
+                            _boardView.Blocks[line, column].sharedMaterial = _blocks.Gray;
                         }
                         else
                         {
                             int blockType = _boardModel.Blocks[line, column];
-                            _boardView.Blocks[line, column].sharedMaterial = _blockMaterials[blockType];
+                            _boardView.Blocks[line, column].sharedMaterial = _blocks.Materials[blockType];
                         }
                     }
                 }
 
                 blink = !blink;
 
-                yield return new WaitForSeconds(_blinkAnimationTime);
+                yield return new WaitForSeconds(_clearLineAnimationTime * _clearLineMultiplier);
             }
         }
 
@@ -305,7 +301,7 @@ namespace Tetris.Controllers
             // Update view after hiding tetromino
             int endLine = tetromino.CurrentLine + tetromino.NumLines;
             int endColumn = tetromino.CurrentColumn + tetromino.NumColumns;
-            _boardView.UpdateView(_boardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blockMaterials);
+            _boardView.UpdateView(_boardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blocks.Materials);
         }
 
         private bool ValidateTetrominoPosition(ITetrominoModel tetromino)
@@ -359,7 +355,7 @@ namespace Tetris.Controllers
             // Update view after showing tetromino
             int endLine = tetromino.CurrentLine + tetromino.NumLines;
             int endColumn = tetromino.CurrentColumn + tetromino.NumColumns;
-            _boardView.UpdateView(_boardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blockMaterials);
+            _boardView.UpdateView(_boardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blocks.Materials);
         }
     }
 }

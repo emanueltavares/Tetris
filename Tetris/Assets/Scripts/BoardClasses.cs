@@ -103,12 +103,6 @@ namespace Tetris.Models
                     }
                 }
 
-                // hide first line
-                for (int col = 0; col < boardModel.NumColumns; col++)
-                {
-                    blocks[0, col].gameObject.SetActive(false);
-                }
-
                 IBoardView boardView = new BoardView()
                 {
                     Blocks = blocks

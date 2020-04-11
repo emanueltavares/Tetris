@@ -18,6 +18,6 @@ namespace Tetris.Models
 
     public interface IBoardFactory
     {
-        (IBoardModel, IBoardView) GetBoard(Material[] blockMaterials);   
+        (IBoardModel, IBoardView) GetBoard(Renderer blocksPrefab, Material[] blockMaterials, float blockScale, Transform blocksParent, int numLines, int numColumns);
     }
 }

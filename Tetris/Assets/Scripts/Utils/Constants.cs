@@ -10,5 +10,8 @@
         public const int OPieceType = 5;
         public const int TPieceType = 6;
         public const int ZPieceType = 7;
+
+        public const int MaxNumLinesPreview = 2;
+        public const int MaxNumColumnsPreview = 4;
     }
 }

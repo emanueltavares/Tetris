@@ -21,6 +21,11 @@ namespace Tetris.Models
         public int NumLines => LetterONumLines;
         public int NumColumns => LetterONumColums;
         public int[,] Blocks { get; private set; }
+        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        {
+            {0, Constants.OPieceType, Constants.OPieceType, 0 },
+            {0, Constants.OPieceType, Constants.OPieceType, 0 },
+        };
 
         public LetterOTetrominoModel()
         {

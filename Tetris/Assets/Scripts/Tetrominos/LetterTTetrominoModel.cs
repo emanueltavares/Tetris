@@ -45,6 +45,11 @@ namespace Tetris.Models
         public int NumLines => LetterTNumLines;
         public int NumColumns => LetterTNumColumns;
         public int[,] Blocks { get; private set; }
+        public int[,] BlocksPreview => new int[Constants.MaxNumLinesPreview, Constants.MaxNumColumnsPreview]
+        {
+            { 0, Constants.TPieceType, Constants.TPieceType, Constants.TPieceType },
+            { 0,  0,                   Constants.TPieceType, 0                    }
+        };
 
         // Private
         private int _currentRotation = 0;
