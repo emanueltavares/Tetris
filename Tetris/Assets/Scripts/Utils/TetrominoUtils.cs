@@ -32,8 +32,6 @@ namespace Tetris.Utils
                     return new LetterZTetrominoModel();
                 case JPieceType:
                     return new LetterJTetrominoModel();
-                case IPieceType:
-                    return new LetterITetrominoModel();
                 default:
                     return new LetterITetrominoModel();
             }

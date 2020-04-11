@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Tetris.Models;
-using Tetris.Utils;
 using Tetris.Views;
 using UnityEngine;
 
@@ -36,7 +35,7 @@ namespace Tetris.Factories
 
         protected virtual void OnEnable()
         {
-            int pieceTypesIndex = _random.Next(PieceTypes.Count - 1);
+            int pieceTypesIndex = _random.Next(PieceTypes.Count);
             int randomPieceType = PieceTypes[pieceTypesIndex];
             NextPieceTypes.Add(randomPieceType);
 
@@ -47,7 +46,7 @@ namespace Tetris.Factories
                 List<int> pieceTypes = new List<int>(PieceTypes);
                 pieceTypes.Remove(randomPieceType);
 
-                pieceTypesIndex = _random.Next(pieceTypes.Count - 1);
+                pieceTypesIndex = _random.Next(pieceTypes.Count);
                 randomPieceType = pieceTypes[pieceTypesIndex];
                 NextPieceTypes.Add(randomPieceType);
             }
@@ -63,7 +62,7 @@ namespace Tetris.Factories
             // get next piece type
             List<int> pieceTypes = new List<int>(PieceTypes);
             pieceTypes.Remove(NextPieceTypes[NextPieceTypes.Count - 1]);
-            int nextPieceType = pieceTypes[_random.Next(pieceTypes.Count - 1)];
+            int nextPieceType = pieceTypes[_random.Next(pieceTypes.Count)];
 
             NextPieceTypes.RemoveAt(0);
             NextPieceTypes.Add(nextPieceType);
@@ -76,7 +75,7 @@ namespace Tetris.Factories
         public ITetrominoModel GetNextPiece(int pieceType, int startLine, int startColumn)
         {
             // next tetromino
-            ITetrominoModel tetromino = TetrominoUtils.GetTetromino(pieceType);
+            ITetrominoModel tetromino = Utils.TetrominoUtils.GetTetromino(pieceType);
             tetromino.CurrentLine = startLine;
             tetromino.CurrentColumn = startColumn;
             return tetromino;
@@ -112,7 +111,7 @@ namespace Tetris.Factories
                 IBoardModel boardModel = _nextPieces[i].Item1;
                 IBoardView boardView = _nextPieces[i].Item2;
 
-                ITetrominoModel tetromino = TetrominoUtils.GetTetromino(nextPieceType);
+                ITetrominoModel tetromino = Utils.TetrominoUtils.GetTetromino(nextPieceType);
                 DrawTetromino(boardModel, boardView, tetromino);
             }
         }
