@@ -6,10 +6,10 @@
         int CurrentColumn { get; set; }
         int NumLines { get; }
         int NumColumns { get; }
-        int Type { get; }
+        int PieceType { get; }
+        int Rotation { get; set; }
+        int MaxRotations { get; }
         int[,] Blocks { get; }
         int[,] BlocksPreview { get; }
-        void RotateClockwise();
-        void RotateCounterClockwise();
     }
 }

@@ -54,6 +54,7 @@ namespace Tetris.Controllers
             if (_levelController == null)
             {
                 _levelController = GetComponent<ILevelController>();
+                _levelController.AddClearedLines(0);
             }
 
             if (_holdController == null)
@@ -80,7 +81,7 @@ namespace Tetris.Controllers
             }
             else
             {
-                int previousHoldPieceType = _holdController.Hold(_currentTetromino.Type);
+                int previousHoldPieceType = _holdController.Hold(_currentTetromino.PieceType);
                 if (previousHoldPieceType != TetrominoUtils.NoPiece)
                 {
                     _currentTetromino = _tetrominosFactory.GetNextPiece(previousHoldPieceType, 0, 3);
@@ -303,22 +304,22 @@ namespace Tetris.Controllers
 
                 if (_inputController.RotateClockwise)
                 {
-                    _currentTetromino.RotateClockwise();
+                    _currentTetromino.Rotation += 1;
                     if (!ValidateTetrominoPosition(_currentTetromino))
                     {
                         // Disable previous rotation
-                        _currentTetromino.RotateCounterClockwise();
+                        _currentTetromino.Rotation -= 1;
                     }
 
                 }
 
                 if (_inputController.RotateCounterClockwise)
                 {
-                    _currentTetromino.RotateCounterClockwise();
+                    _currentTetromino.Rotation -= 1;
                     if (!ValidateTetrominoPosition(_currentTetromino))
                     {
                         // Disable previous rotation
-                        _currentTetromino.RotateClockwise();
+                        _currentTetromino.Rotation += 1;
                     }
                 }
 

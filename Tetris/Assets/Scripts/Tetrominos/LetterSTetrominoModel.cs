@@ -5,7 +5,6 @@
         // Constants
         private const int LetterSNumLines = 3;
         private const int LetterSNumColumns = 3;
-        private const int MaxRotations = 2;
 
         // Readonlies
         private static readonly int[,] Horizontal = new int[LetterSNumLines, LetterSNumColumns]
@@ -23,7 +22,7 @@
 
 
         // Properties
-        public int Type => Utils.TetrominoUtils.SPieceType;
+        public int PieceType => Utils.TetrominoUtils.SPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterSNumLines;
@@ -34,9 +33,27 @@
             { 0,    0,                    Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType },
             { 0,    Utils.TetrominoUtils.SPieceType, Utils.TetrominoUtils.SPieceType, 0                    }
         };
+        public int MaxRotations => 2;
+        public int Rotation
+        {
+            get { return _rotation; }
+            set
+            {
+                _rotation = value;
+                _rotation = MathExt.Mod(_rotation, MaxRotations);
+                if (_rotation == 0)
+                {
+                    Blocks = Horizontal;
+                }
+                else
+                {
+                    Blocks = Vertical;
+                }
+            }
+        }
 
         // Private
-        private int _currentRotation = 0;
+        private int _rotation = 0;
 
         public LetterSTetrominoModel()
         {
@@ -45,22 +62,22 @@
 
         public void RotateClockwise()
         {
-            _currentRotation += 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
+            _rotation += 1;
+            _rotation = MathExt.Mod(_rotation, MaxRotations);
             SetRotation();
         }
 
         public void RotateCounterClockwise()
         {
-            _currentRotation -= 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
+            _rotation -= 1;
+            _rotation = MathExt.Mod(_rotation, MaxRotations);
 
             SetRotation();
         }
 
         private void SetRotation()
         {
-            if (_currentRotation == 0)
+            if (_rotation == 0)
             {
                 Blocks = Horizontal;
             }

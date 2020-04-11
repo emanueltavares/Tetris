@@ -14,7 +14,7 @@
             };
 
         // Properties
-        public int Type => Utils.TetrominoUtils.OPieceType;
+        public int PieceType => Utils.TetrominoUtils.OPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterONumLines;
@@ -25,14 +25,23 @@
             {0, Utils.TetrominoUtils.OPieceType, Utils.TetrominoUtils.OPieceType, 0 },
             {0, Utils.TetrominoUtils.OPieceType, Utils.TetrominoUtils.OPieceType, 0 },
         };
+        public int MaxRotations => 1;
+        public int Rotation
+        {
+            get { return _rotation; }
+            set
+            {
+                _rotation = value;
+                _rotation = MathExt.Mod(_rotation, MaxRotations);
+            }
+        }
+
+        // Private
+        private int _rotation = 0;
 
         public LetterOTetrominoModel()
         {
             Blocks = Vertical;
         }
-
-        public void RotateClockwise() { }
-
-        public void RotateCounterClockwise() { }
     }
 }

@@ -5,7 +5,7 @@
         // Constants
         private const int LetterINumLines = 4;
         private const int LetterINumColumns = 4;
-        private const int MaxRotations = 2;
+        //private const int MaxRotations = 2;
 
         // Readonlies
         private static readonly int[,] Vertical = new int[LetterINumLines, LetterINumColumns]
@@ -24,7 +24,8 @@
             };
 
         // Properties
-        public int Type => Utils.TetrominoUtils.IPieceType;
+        public int MaxRotations => 2;
+        public int PieceType => Utils.TetrominoUtils.IPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterINumLines;
@@ -35,39 +36,29 @@
             { Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType, Utils.TetrominoUtils.IPieceType },
             {0, 0, 0, 0 }
         };
+        public int Rotation 
+        {
+            get { return _rotation; }
+            set 
+            {
+                _rotation = value;
+                _rotation = MathExt.Mod(_rotation, MaxRotations);
+                if (_rotation == 0)
+                {
+                    Blocks = Horizontal;
+                }
+                else
+                {
+                    Blocks = Vertical;
+                }
+            }
+        }
 
-        // Private
-        private int _currentRotation = 0;
+        private int _rotation = 0;
 
         public LetterITetrominoModel()
         {
             Blocks = Horizontal;
-        }
-
-        public void RotateClockwise()
-        {
-            _currentRotation += 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
-            SetRotation();
-        }
-
-        public void RotateCounterClockwise()
-        {
-            _currentRotation -= 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
-            SetRotation();
-        }
-
-        private void SetRotation()
-        {
-            if (_currentRotation == 0)
-            {
-                Blocks = Horizontal;
-            }
-            else
-            {
-                Blocks = Vertical;
-            }
         }
     }
 }

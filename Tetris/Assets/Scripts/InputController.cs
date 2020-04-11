@@ -34,7 +34,9 @@ namespace Tetris.Controllers
         {
             if (_levelController == null)
             {
+                // Initializes level controller
                 _levelController = GetComponent<ILevelController>();
+                _levelController.AddClearedLines(0);
             }
 
             if (_boardController == null)
@@ -42,8 +44,6 @@ namespace Tetris.Controllers
                 _boardController = GetComponent<IBoardController>();
             }
 
-            // Initializes level controller
-            _levelController.AddClearedLines(0);
             HoldInputMaxTime = _levelController.GravityInterval / _boardController.BoardModel.NumColumns;
         }
 

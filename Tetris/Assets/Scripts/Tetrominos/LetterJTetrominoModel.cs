@@ -5,7 +5,6 @@
         // Constants
         private const int LetterJNumLines = 3;
         private const int LetterJNumColumns = 3;
-        private const int MaxRotations = 4;
 
         // Readonlies
         private static readonly int[,] First = new int[LetterJNumLines, LetterJNumColumns]
@@ -37,7 +36,7 @@
             };
 
         // Properties
-        public int Type => Utils.TetrominoUtils.JPieceType;
+        public int PieceType => Utils.TetrominoUtils.JPieceType;
         public int CurrentLine { get; set; }
         public int CurrentColumn { get; set; }
         public int NumLines => LetterJNumLines;
@@ -48,47 +47,38 @@
             { 0, Utils.TetrominoUtils.JPieceType, Utils.TetrominoUtils.JPieceType, Utils.TetrominoUtils.JPieceType },
             { 0, 0,                    0,                    Utils.TetrominoUtils.JPieceType }
         };
+        public int MaxRotations => 4;
+        public int Rotation
+        {
+            get { return _rotation; }
+            set
+            {
+                _rotation = value;
+                _rotation = MathExt.Mod(_rotation, MaxRotations);
+                switch (_rotation)
+                {
+                    case 0:
+                        Blocks = First;
+                        break;
+                    case 1:
+                        Blocks = Second;
+                        break;
+                    case 2:
+                        Blocks = Third;
+                        break;
+                    case 3:
+                        Blocks = Fourth;
+                        break;
+                }
+            }
+        }
 
         // Private
-        private int _currentRotation = 0;
+        private int _rotation = 0;
 
         public LetterJTetrominoModel()
         {
             Blocks = First;
-        }
-
-        public void RotateClockwise()
-        {
-            _currentRotation += 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
-            SetRotation();
-        }
-
-        public void RotateCounterClockwise()
-        {
-            _currentRotation -= 1;
-            _currentRotation = MathExt.Mod(_currentRotation, MaxRotations);
-
-            SetRotation();
-        }
-
-        private void SetRotation()
-        {
-            switch (_currentRotation)
-            {
-                case 0:
-                    Blocks = First;
-                    break;
-                case 1:
-                    Blocks = Second;
-                    break;
-                case 2:
-                    Blocks = Third;
-                    break;
-                case 3:
-                    Blocks = Fourth;
-                    break;
-            }
         }
     }
 }
