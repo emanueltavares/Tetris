@@ -152,10 +152,6 @@ namespace Tetris.Controllers
 
             // Game Over
             _gameOverPanel.SetActive(true);
-
-            yield return new WaitUntil(() => _inputController.AnyButtonDown);
-
-            SceneManager.LoadScene(TetrominoUtils.GameScene);
         }
 
         private void UpdateGhostTetromino(ITetrominoModel tetromino, ITetrominoModel ghostTetromino)
@@ -598,9 +594,9 @@ namespace Tetris.Controllers
             BoardView.UpdateView(BoardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blocks);
         }
 
-        public void QuitGame()
+        public void GoToMenu()
         {
-            SceneManager.LoadScene(TetrominoUtils.GameScene);
+            SceneManager.LoadScene(TetrominoUtils.StartScene);
         }
 
         public void ResumeGame()
@@ -610,6 +606,11 @@ namespace Tetris.Controllers
             IsPaused = false;
             _pausePanel.SetActive(false);
         }
+
+        public void StartGame()
+        {
+            SceneManager.LoadScene(TetrominoUtils.GameScene);
+        }
     }
 
     public interface IBoardController
@@ -617,8 +618,9 @@ namespace Tetris.Controllers
         bool IsPaused { get; }
         bool IsInitialized { get; }
         void Initialize();
+        void StartGame();
         void ResumeGame();
-        void QuitGame();
+        void GoToMenu();
         IBoardModel BoardModel { get; }
         IBoardView BoardView { get; }
     }
