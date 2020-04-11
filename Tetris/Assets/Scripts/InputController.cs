@@ -4,6 +4,7 @@ namespace Tetris.Controllers
 {
     public class InputController : MonoBehaviour, IInputController
     {
+        [SerializeField] private string _pauseButtonName;
         [SerializeField] private string _leftButtonName;
         [SerializeField] private string _rightButtonName;
         [SerializeField] private string _rotateClockwiseButtonName;
@@ -23,12 +24,10 @@ namespace Tetris.Controllers
         public bool MoveRight { get; private set; }
         public bool RotateClockwise { get; private set; }
         public bool RotateCounterClockwise { get; private set; }
-
         public bool DropHard { get; private set; }
-
         public bool DropSoft { get; private set; }
-
         public bool HoldPiece { get; private set; }
+        public bool Pause { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -50,6 +49,7 @@ namespace Tetris.Controllers
 
         protected virtual void Update()
         {
+            Pause = Input.GetButtonDown(_pauseButtonName);
             RotateClockwise = Input.GetButtonDown(_rotateClockwiseButtonName);
             RotateCounterClockwise = Input.GetButtonDown(_rotateCounterClockwiseButtonName);
             DropHard = Input.GetButtonDown(_dropHardButtonName);
@@ -95,6 +95,7 @@ namespace Tetris.Controllers
     public interface IInputController
     {
         float HoldInputMaxTime { get; }
+        bool Pause { get; }
         bool MoveLeft { get; }
         bool MoveRight { get; }
         bool RotateCounterClockwise { get; }

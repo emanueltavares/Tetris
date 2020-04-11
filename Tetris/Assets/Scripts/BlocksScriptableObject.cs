@@ -20,7 +20,7 @@ namespace Tetris.Models
         [SerializeField] private Material _gray;
 
         // Properties
-        //public Material Background { get => _background; set => _background = value; }
+        public Material Background { get => _background; set => _background = value; }
         //public Material LightBlue { get => _lightBlue; set => _lightBlue = value; }
         //public Material DarkBlue { get => _darkBlue; set => _darkBlue = value; }
         //public Material Orange { get => _orange; set => _orange = value; }

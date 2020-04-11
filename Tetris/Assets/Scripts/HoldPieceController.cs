@@ -17,7 +17,52 @@ namespace Tetris.Controllers
         private IBoardView _boardView;
         private IBoardModel _boardModel;
         private IBoardFactory _boardFactory;
+        private IBoardController _boardController;
         private int _holdPieceType = TetrominoUtils.NoPiece;
+        private bool _isHidingHoldPiece = false;
+
+        protected virtual void OnEnable()
+        {
+            if (_boardController == null)
+            {
+                _boardController = GetComponent<IBoardController>();
+            }
+
+            if (_boardFactory == null)
+            {
+                _boardFactory = GetComponent<IBoardFactory>();
+            }
+
+            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockPrefab, _blocks, _blockScale, _swapBoardTransform, Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview);
+
+            // Draw Board
+            for (int line = 0; line < _boardModel.NumLines; line++)
+            {
+                for (int column = 0; column < _boardModel.NumColumns; column++)
+                {
+                    _boardModel.Blocks[line, column] = TetrominoUtils.NoPiece;
+                }
+            }
+
+            _boardView.UpdateView(_boardModel, _blocks);
+        }
+
+        protected virtual void Update()
+        {
+            if (_boardController.IsPaused != _isHidingHoldPiece)
+            {
+                if (!_isHidingHoldPiece)
+                {
+                    _boardView.HideView(_blocks);
+                }
+                else 
+                {
+                    _boardView.UpdateView(_boardModel, _blocks);
+                }
+
+                _isHidingHoldPiece = _boardController.IsPaused;
+            }
+        }
 
         public int Hold(int pieceType)
         {
@@ -43,27 +88,6 @@ namespace Tetris.Controllers
 
             // Update view after showing tetromino
             boardView.UpdateView(boardModel, _blocks);
-        }
-
-        protected virtual void OnEnable()
-        {
-            if (_boardFactory == null)
-            {
-                _boardFactory = GetComponent<IBoardFactory>();
-            }
-
-            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockPrefab, _blocks, _blockScale, _swapBoardTransform, Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview);
-
-            // Draw Board
-            for (int line = 0; line < _boardModel.NumLines; line++)
-            {
-                for (int column = 0; column < _boardModel.NumColumns; column++)
-                {
-                    _boardModel.Blocks[line, column] = TetrominoUtils.NoPiece;
-                }
-            }
-
-            _boardView.UpdateView(_boardModel, _blocks);
         }
     }
 

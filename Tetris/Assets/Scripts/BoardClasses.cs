@@ -39,6 +39,22 @@ namespace Tetris.Models
     {
         public Renderer[,] Blocks { get; private set; }
 
+        public void HideView(BlocksScriptableObject blocks)
+        {
+            int numLines = Blocks.GetLength(0);
+            int numColumns = Blocks.GetLength(1);
+            for (int line = 0; line < numLines; line++)
+            {
+                for (int column = 0; column < numColumns; column++)
+                {
+                    if (line >= 0 && line < numLines && column >= 0 && column < numColumns)
+                    {
+                        Blocks[line, column].sharedMaterial = blocks.Background;
+                    }
+                }
+            }
+        }
+
         public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, BlocksScriptableObject blocks)
         {
             for (int line = startLine; line < endLine; line++)

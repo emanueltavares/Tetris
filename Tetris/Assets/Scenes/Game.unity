@@ -1147,6 +1147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444f24cf9949da4458d1236775b19ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pauseButtonName: Pause
   _leftButtonName: Left
   _rightButtonName: Right
   _rotateClockwiseButtonName: RotateClockwise

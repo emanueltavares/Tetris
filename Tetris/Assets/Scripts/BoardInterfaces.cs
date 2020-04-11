@@ -19,6 +19,7 @@ namespace Tetris.Views
         Renderer[,] Blocks { get; }
         void UpdateView(IBoardModel boardModel, BlocksScriptableObject blocks);
         void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, BlocksScriptableObject blocks);
+        void HideView(BlocksScriptableObject blocks);
     }
 }
 

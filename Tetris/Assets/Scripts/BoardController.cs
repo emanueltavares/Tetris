@@ -37,6 +37,7 @@ namespace Tetris.Controllers
         public IBoardModel BoardModel { get; private set; }
         public IBoardView BoardView { get; private set; }
         public bool IsInitialized { get; private set; }
+        public bool IsPaused { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -220,6 +221,7 @@ namespace Tetris.Controllers
                     DrawGhostTetromino(_ghostTetromino);
                     DrawTetromino(_currentTetromino);
                 }
+
             }
 
             if (!useHoldPiece)
@@ -330,72 +332,94 @@ namespace Tetris.Controllers
         private IEnumerator ControlTetromino()
         {
             float gravityInterval = _levelController.GravityInterval;
-            for (float elapsedTime = 0f; elapsedTime < gravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, gravityInterval, Time.deltaTime))
+            float elapsedTime = 0f;
+            while (elapsedTime < gravityInterval)
             {
-                // if drop hard is activated, we skip control
-                if (_inputController.DropHard)
+                if (_inputController.Pause)
                 {
-                    yield break;
-                }
-
-                if (_inputController.HoldPiece && !_isHoldPiece)
-                {
-                    yield break;
-                }
-
-                if (_inputController.DropSoft)
-                {
-                    gravityInterval = _levelController.DropSoftGravityInterval;
-                }
-
-                ClearTetromino(_ghostTetromino);
-                ClearTetromino(_currentTetromino);
-
-                if (_inputController.MoveLeft)
-                {
-                    _currentTetromino.CurrentColumn -= 1;
-
-                    if (!CanPlaceTetromino(_currentTetromino))
+                    if (!IsPaused)
                     {
-                        // Disable previous move
-                        _currentTetromino.CurrentColumn += 1;
+                        ClearTetromino(_ghostTetromino);
+                        ClearTetromino(_currentTetromino);
+                        BoardView.HideView(_blocks);
                     }
+                    else
+                    {
+                        BoardView.UpdateView(BoardModel, _blocks);
+                    }
+
+                    IsPaused = !IsPaused;
                 }
 
-                if (_inputController.MoveRight)
+                if (!IsPaused)
                 {
-                    _currentTetromino.CurrentColumn += 1;
-                    if (!CanPlaceTetromino(_currentTetromino))
+                    // if drop hard is activated, we skip control
+                    if (_inputController.DropHard)
                     {
-                        // Disable previous move
+                        yield break;
+                    }
+
+                    if (_inputController.HoldPiece && !_isHoldPiece)
+                    {
+                        yield break;
+                    }
+
+                    if (_inputController.DropSoft)
+                    {
+                        gravityInterval = _levelController.DropSoftGravityInterval;
+                    }
+
+                    ClearTetromino(_ghostTetromino);
+                    ClearTetromino(_currentTetromino);
+
+                    if (_inputController.MoveLeft)
+                    {
                         _currentTetromino.CurrentColumn -= 1;
-                    }
-                }
 
-                if (_inputController.RotateClockwise)
-                {
-                    _currentTetromino.Rotation += 1;
-                    if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
-                    {
-                        // Disable previous rotation
-                        _currentTetromino.Rotation -= 1;
+                        if (!CanPlaceTetromino(_currentTetromino))
+                        {
+                            // Disable previous move
+                            _currentTetromino.CurrentColumn += 1;
+                        }
                     }
 
-                }
-
-                if (_inputController.RotateCounterClockwise)
-                {
-                    _currentTetromino.Rotation -= 1;
-                    if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
+                    if (_inputController.MoveRight)
                     {
-                        // Disable previous rotation
+                        _currentTetromino.CurrentColumn += 1;
+                        if (!CanPlaceTetromino(_currentTetromino))
+                        {
+                            // Disable previous move
+                            _currentTetromino.CurrentColumn -= 1;
+                        }
+                    }
+
+                    if (_inputController.RotateClockwise)
+                    {
                         _currentTetromino.Rotation += 1;
-                    }
-                }
+                        if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
+                        {
+                            // Disable previous rotation
+                            _currentTetromino.Rotation -= 1;
+                        }
 
-                UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
-                DrawGhostTetromino(_ghostTetromino);
-                DrawTetromino(_currentTetromino);
+                    }
+
+                    if (_inputController.RotateCounterClockwise)
+                    {
+                        _currentTetromino.Rotation -= 1;
+                        if (!CanPlaceTetrominoWithWallKick(_currentTetromino))
+                        {
+                            // Disable previous rotation
+                            _currentTetromino.Rotation += 1;
+                        }
+                    }
+
+                    elapsedTime = Mathf.MoveTowards(elapsedTime, gravityInterval, Time.deltaTime);
+
+                    UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
+                    DrawGhostTetromino(_ghostTetromino);
+                    DrawTetromino(_currentTetromino);
+                }
 
                 yield return null;
             }
@@ -530,6 +554,7 @@ namespace Tetris.Controllers
 
     public interface IBoardController
     {
+        bool IsPaused { get; }
         bool IsInitialized { get; }
         void Initialize();
         IBoardModel BoardModel { get; }
