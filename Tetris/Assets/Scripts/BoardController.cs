@@ -121,6 +121,11 @@ namespace Tetris.Controllers
                 yield return StartCoroutine(AnimateClearedLines(clearedLines));
                 RemoveClearedLines(clearedLines);
             }
+            else
+            {
+                // Add a frame to refresh input
+                yield return null;
+            }
 
             yield return StartCoroutine(SpawnTetromino());
         }
