@@ -39,7 +39,7 @@ namespace Tetris.Models
     {
         public Renderer[,] Blocks { get; private set; }
 
-        public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, Material[] blockMaterials)
+        public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, BlocksScriptableObject blocks)
         {
             for (int line = startLine; line < endLine; line++)
             {
@@ -48,13 +48,13 @@ namespace Tetris.Models
                     if (line >= 0 && line < boardModel.NumLines && column >= 0 && column < boardModel.NumColumns)
                     {
                         int blockType = boardModel.Blocks[line, column];
-                        Blocks[line, column].sharedMaterial = blockMaterials[blockType];
+                        Blocks[line, column].sharedMaterial = blocks.GetMaterial(blockType);
                     }
                 }
             }
         }
 
-        public void UpdateView(IBoardModel boardModel, Material[] blockMaterials)
+        public void UpdateView(IBoardModel boardModel, BlocksScriptableObject blocks)
         {
             for (int line = 0; line < boardModel.NumLines; line++)
             {
@@ -63,7 +63,7 @@ namespace Tetris.Models
                     if (line >= 0 && line < boardModel.NumLines && column >= 0 && column < boardModel.NumColumns)
                     {
                         int blockType = boardModel.Blocks[line, column];
-                        Blocks[line, column].sharedMaterial = blockMaterials[blockType];
+                        Blocks[line, column].sharedMaterial = blocks.GetMaterial(blockType);
                     }
                 }
             }
@@ -71,9 +71,9 @@ namespace Tetris.Models
 
         public class Builder
         {
-            public IBoardView Build(IBoardModel boardModel, Renderer blockPrefab, Material[] blockMaterials, float blockScale, Transform parent)
+            public IBoardView Build(IBoardModel boardModel, Renderer blockPrefab, BlocksScriptableObject blocks, float blockScale, Transform parent)
             {
-                Renderer[,] blocks = new Renderer[boardModel.NumLines, boardModel.NumColumns];
+                Renderer[,] blockRenderers = new Renderer[boardModel.NumLines, boardModel.NumColumns];
 
                 float halfBoardWidth = blockScale * (boardModel.NumColumns - 1) * 0.5f;
                 float halfBoardHeight = blockScale * (boardModel.NumLines - 1) * 0.5f;
@@ -97,8 +97,8 @@ namespace Tetris.Models
                         blockInstance.transform.localScale = localScale;
 
                         int blockType = boardModel.Blocks[line, col];
-                        blockInstance.sharedMaterial = blockMaterials[blockType];
-                        blocks[line, col] = blockInstance;
+                        blockInstance.sharedMaterial = blocks.GetMaterial(blockType);
+                        blockRenderers[line, col] = blockInstance;
 
                         blockInstance.gameObject.name = string.Format("Block [{0}, {1}] Value: {2}", line, col, blockType);
                     }
@@ -106,7 +106,7 @@ namespace Tetris.Models
 
                 IBoardView boardView = new BoardView()
                 {
-                    Blocks = blocks
+                    Blocks = blockRenderers
                 };
 
                 return boardView;

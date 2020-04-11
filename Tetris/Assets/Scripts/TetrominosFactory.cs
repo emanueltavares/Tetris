@@ -108,7 +108,7 @@ namespace Tetris.Factories
             {
                 Transform nextPiecesParent = _nextPiecesParents[i];
                 (IBoardModel, IBoardView) board = _boardFactory.GetBoard(_blockPrefab,
-                                                                         _blocks.Materials,
+                                                                         _blocks,
                                                                          _blockScale,
                                                                          nextPiecesParent,
                                                                          Utils.TetrominoUtils.MaxNumLinesPreview,
@@ -143,7 +143,7 @@ namespace Tetris.Factories
             }
 
             // Update view after showing tetromino
-            boardView.UpdateView(boardModel, _blocks.Materials);
+            boardView.UpdateView(boardModel, _blocks);
         }        
     }
 

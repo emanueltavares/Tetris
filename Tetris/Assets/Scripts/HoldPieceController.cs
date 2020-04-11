@@ -42,7 +42,7 @@ namespace Tetris.Controllers
             }
 
             // Update view after showing tetromino
-            boardView.UpdateView(boardModel, _blocks.Materials);
+            boardView.UpdateView(boardModel, _blocks);
         }
 
         protected virtual void OnEnable()
@@ -52,7 +52,7 @@ namespace Tetris.Controllers
                 _boardFactory = GetComponent<IBoardFactory>();
             }
 
-            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockPrefab, _blocks.Materials, _blockScale, _swapBoardTransform, Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview);
+            (_boardModel, _boardView) = _boardFactory.GetBoard(_blockPrefab, _blocks, _blockScale, _swapBoardTransform, Utils.TetrominoUtils.MaxNumLinesPreview, Utils.TetrominoUtils.MaxNumColumnsPreview);
 
             // Draw Board
             for (int line = 0; line < _boardModel.NumLines; line++)
@@ -63,7 +63,7 @@ namespace Tetris.Controllers
                 }
             }
 
-            _boardView.UpdateView(_boardModel, _blocks.Materials);
+            _boardView.UpdateView(_boardModel, _blocks);
         }
     }
 

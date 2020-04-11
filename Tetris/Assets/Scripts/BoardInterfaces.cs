@@ -17,8 +17,8 @@ namespace Tetris.Views
     public interface IBoardView
     {
         Renderer[,] Blocks { get; }
-        void UpdateView(IBoardModel boardModel, Material[] blockMaterials);
-        void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, Material[] blockMaterials);
+        void UpdateView(IBoardModel boardModel, BlocksScriptableObject blocks);
+        void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, BlocksScriptableObject blocks);
     }
 }
 
@@ -26,6 +26,6 @@ namespace Tetris.Factories
 {
     public interface IBoardFactory
     {
-        (IBoardModel, IBoardView) GetBoard(Renderer blocksPrefab, Material[] blockMaterials, float blockScale, Transform blocksParent, int numLines, int numColumns);
+        (IBoardModel, IBoardView) GetBoard(Renderer blocksPrefab, BlocksScriptableObject _blocks, float blockScale, Transform blocksParent, int numLines, int numColumns);
     }
 }

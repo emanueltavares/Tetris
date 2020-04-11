@@ -4,6 +4,7 @@ namespace Tetris.Utils
 {
     public static class TetrominoUtils
     {
+        public const int GhostPiece = -1;
         public const int NoPiece = 0;
         public const int IPieceType = 1;
         public const int JPieceType = 2;
@@ -35,6 +36,15 @@ namespace Tetris.Utils
                 default:
                     return new LetterITetrominoModel();
             }
+        }
+
+        public static ITetrominoModel CloneTetromino(ITetrominoModel tetrominoModel)
+        {
+            ITetrominoModel clone = GetTetromino(tetrominoModel.PieceType);
+            //clone.CurrentLine = tetrominoModel.CurrentLine;
+            //clone.CurrentColumn = tetrominoModel.CurrentColumn;
+            clone.Rotation = tetrominoModel.Rotation;
+            return clone;
         }
     }
 }
