@@ -11,10 +11,6 @@ namespace Tetris.Controllers
     public partial class BoardController : MonoBehaviour
     {
         // Serialized Fields        
-        [Header("Gameplay")]
-        [SerializeField] private float _applyGravityInterval = 1f;
-        [Range(0f, 1f)] [SerializeField] private float _dropSoftGravityMultiplier = 0.1f;
-
         [Header("Animation")]
         [SerializeField] private float _clearLineAnimationTime = 1f;
         [Range(0f, 1f)] [SerializeField] private float _clearLineMultiplier = 0.125f;
@@ -31,6 +27,7 @@ namespace Tetris.Controllers
         private IBoardFactory _boardFactory;
         private IHoldController _holdController;
         private IInputController _inputController;
+        private ILevelController _levelController;
         private IBoardModel _boardModel;
         private IBoardView _boardView;
         private ITetrominosFactory _tetrominosFactory;
@@ -51,7 +48,13 @@ namespace Tetris.Controllers
             {
                 _inputController = GetComponent<IInputController>();
             }
-            _inputController.HoldInputMaxTime = _applyGravityInterval / _boardModel.NumColumns;
+
+            if (_levelController == null)
+            {
+                _levelController = GetComponent<ILevelController>();
+            }
+
+            _inputController.HoldInputMaxTime = _levelController.GravityInterval / _boardModel.NumColumns;
 
             if (_holdController == null)
             {
@@ -156,6 +159,7 @@ namespace Tetris.Controllers
                 {
                     yield return StartCoroutine(AnimateClearedLines(clearedLines));
                     RemoveClearedLines(clearedLines);
+                    _levelController.AddClearedLines(clearedLines.Count);
                 }
                 else
                 {
@@ -255,8 +259,8 @@ namespace Tetris.Controllers
 
         private IEnumerator ControlTetromino()
         {
-            float applyGravityInterval = _applyGravityInterval;
-            for (float elapsedTime = 0f; elapsedTime < applyGravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, applyGravityInterval, Time.deltaTime))
+            float gravityInterval = _levelController.GravityInterval;
+            for (float elapsedTime = 0f; elapsedTime < gravityInterval; elapsedTime = Mathf.MoveTowards(elapsedTime, gravityInterval, Time.deltaTime))
             {
                 // if drop hard is activated, we skip control
                 if (_inputController.DropHard)
@@ -271,7 +275,7 @@ namespace Tetris.Controllers
 
                 if (_inputController.DropSoft)
                 {
-                    applyGravityInterval = _applyGravityInterval * _dropSoftGravityMultiplier;
+                    gravityInterval = _levelController.DropSoftGravityInterval;
                 }
 
                 ClearTetromino(_currentTetromino);
