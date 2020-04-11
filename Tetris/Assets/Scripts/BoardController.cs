@@ -5,12 +5,17 @@ using Tetris.Models;
 using Tetris.Utils;
 using Tetris.Views;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Tetris.Controllers
 {
     public partial class BoardController : MonoBehaviour, IBoardController
     {
-        // Serialized Fields        
+        // Serialized Fields 
+        [Header("UI")]
+        [SerializeField] private GameObject _pausePanel;
+        [SerializeField] private GameObject _gameOverPanel;
+
         [Header("Animation")]
         [SerializeField] private float _clearLineAnimationTime = 1f;
         [Range(0f, 1f)] [SerializeField] private float _clearLineMultiplier = 0.125f;
@@ -75,6 +80,8 @@ namespace Tetris.Controllers
                     _holdController = GetComponent<IHoldController>();
                 }
 
+                _pausePanel.SetActive(IsPaused);
+
                 IsInitialized = true;
             }
         }
@@ -122,13 +129,22 @@ namespace Tetris.Controllers
             }
             else
             {
-                // Show the tetromino
-                ClearTetromino(_currentTetromino);
-                DrawTetromino(_currentTetromino);
-
-                // Game Over
+                yield return StartCoroutine(ShowGameOver());
             }
 
+        }
+
+        private IEnumerator ShowGameOver()
+        {
+            ClearTetromino(_currentTetromino);
+            DrawTetromino(_currentTetromino);
+
+            // Game Over
+            _gameOverPanel.SetActive(true);
+
+            yield return new WaitUntil(() => _inputController.AnyButtonDown);
+
+            SceneManager.LoadScene("Game");
         }
 
         private void UpdateGhostTetromino(ITetrominoModel tetromino, ITetrominoModel ghostTetromino)
@@ -349,6 +365,7 @@ namespace Tetris.Controllers
                     }
 
                     IsPaused = !IsPaused;
+                    _pausePanel.SetActive(IsPaused);
                 }
 
                 if (!IsPaused)
@@ -473,7 +490,7 @@ namespace Tetris.Controllers
                     }
 
                     // last try
-                    tetromino.CurrentColumn  = currentColumnCache;
+                    tetromino.CurrentColumn = currentColumnCache;
                     tetromino.CurrentColumn += 1;
                     if (!CanPlaceTetromino(tetromino))
                     {

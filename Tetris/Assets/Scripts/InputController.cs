@@ -28,6 +28,7 @@ namespace Tetris.Controllers
         public bool DropSoft { get; private set; }
         public bool HoldPiece { get; private set; }
         public bool Pause { get; private set; }
+        public bool AnyButtonDown { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -55,6 +56,7 @@ namespace Tetris.Controllers
             DropHard = Input.GetButtonDown(_dropHardButtonName);
             HoldPiece = Input.GetButtonDown(_holdPieceButtonName);
             DropSoft = Input.GetButton(_dropSoftButtonName);
+            AnyButtonDown = Input.anyKeyDown;
 
             // Is holding left arrow key
             MoveLeft = false;
@@ -103,5 +105,6 @@ namespace Tetris.Controllers
         bool DropHard { get; }
         bool DropSoft { get; }
         bool HoldPiece { get; }
+        bool AnyButtonDown { get; }
     }
 }
