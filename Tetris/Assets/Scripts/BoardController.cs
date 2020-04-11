@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Tetris.Factories;
 using Tetris.Models;
-using Tetris.Utils;
 using Tetris.Views;
 using UnityEngine;
 
@@ -106,24 +105,77 @@ namespace Tetris.Controllers
                 _isHoldPiece = true;
             }
 
-            ClearTetromino(_currentTetromino, _ghostTetromino);
+            //ClearTetromino(_ghostTetromino);
 
-            if (ValidateTetrominoPosition(_currentTetromino))
+            if (CanPlaceTetromino(_currentTetromino))
             {
+                ClearTetromino(_currentTetromino);
+
                 // Show the tetromino
-                _ghostTetromino = Utils.TetrominoUtils.CloneTetromino(_currentTetromino);                
-                DrawTetromino(_currentTetromino, _ghostTetromino);
+                _ghostTetromino = Utils.TetrominoUtils.CloneTetromino(_currentTetromino);
+
+                UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
+                DrawGhostTetromino(_ghostTetromino);
+                DrawTetromino(_currentTetromino);
 
                 yield return StartCoroutine(MoveTetromino());
             }
             else
             {
-                // Show the tetromino                
-                DrawTetromino(_currentTetromino, null);
+                // Show the tetromino
+                ClearTetromino(_currentTetromino);
+                DrawTetromino(_currentTetromino);
 
                 // Game Over
             }
 
+        }
+
+        private void UpdateGhostTetromino(ITetrominoModel tetromino, ITetrominoModel ghostTetromino)
+        {
+            ghostTetromino.CurrentLine = tetromino.CurrentLine;
+            ghostTetromino.CurrentColumn = tetromino.CurrentColumn;
+            ghostTetromino.Rotation = tetromino.Rotation;
+
+            for (int line = ghostTetromino.CurrentLine; line < BoardModel.NumLines; line++)
+            {
+                int previousLine = ghostTetromino.CurrentLine;
+                ghostTetromino.CurrentLine = line;
+
+                if (!CanPlaceTetromino(ghostTetromino))
+                {
+                    ghostTetromino.CurrentLine = previousLine;
+                    break;
+                }
+            }
+        }
+
+        private void DrawGhostTetromino(ITetrominoModel ghostTetromino)
+        {
+            // Draw ghost tetromino
+            for (int blockLine = 0; blockLine < ghostTetromino.NumLines; blockLine++)
+            {
+                for (int blockColumn = 0; blockColumn < ghostTetromino.NumColumns; blockColumn++)
+                {
+                    int blockType = ghostTetromino.Blocks[blockLine, blockColumn];
+                    if (blockType > Utils.TetrominoUtils.NoPiece)
+                    {
+                        // Converts the block line and column to board line and column
+                        int boardLine = ghostTetromino.CurrentLine + blockLine;
+                        int boardColumn = ghostTetromino.CurrentColumn + blockColumn;
+
+                        if (boardLine >= 0 && boardLine < BoardModel.NumLines && boardColumn >= 0 && boardColumn < BoardModel.NumColumns)
+                        {
+                            BoardModel.Blocks[boardLine, boardColumn] = Utils.TetrominoUtils.GhostPiece;
+                        }
+                    }
+                }
+            }
+
+            // Update view after showing tetromino
+            int ghostEndLine = ghostTetromino.CurrentLine + ghostTetromino.NumLines;
+            int ghostEndColumn = ghostTetromino.CurrentColumn + ghostTetromino.NumColumns;
+            BoardView.UpdateView(BoardModel, ghostTetromino.CurrentLine, ghostTetromino.CurrentColumn, ghostEndLine, ghostEndColumn, _blocks);
         }
 
         private IEnumerator MoveTetromino()
@@ -147,7 +199,8 @@ namespace Tetris.Controllers
                     activateDropHard = true;
                 }
 
-                ClearTetromino(_currentTetromino, _ghostTetromino);
+                ClearTetromino(_ghostTetromino);
+                ClearTetromino(_currentTetromino);
 
                 if (_inputController.HoldPiece && !_isHoldPiece)
                 {
@@ -158,14 +211,15 @@ namespace Tetris.Controllers
                     // Apply gravity
                     _currentTetromino.CurrentLine += 1;
 
-                    if (!ValidateTetrominoPosition(_currentTetromino))
+                    if (!CanPlaceTetromino(_currentTetromino))
                     {
                         // rollback and lock the tetromino
                         _currentTetromino.CurrentLine -= 1;
                         isTetrominoLocked = true;
                     }
-
-                    DrawTetromino(_currentTetromino, _ghostTetromino);
+                    UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
+                    DrawGhostTetromino(_ghostTetromino);
+                    DrawTetromino(_currentTetromino);
                 }
             }
 
@@ -238,7 +292,7 @@ namespace Tetris.Controllers
             {
                 for (int column = 0; column < BoardModel.NumColumns; column++)
                 {
-                    BoardModel.Blocks[line, column] = Mathf.Max(listBlocks[line][column], TetrominoUtils.NoPiece);
+                    BoardModel.Blocks[line, column] = Mathf.Max(listBlocks[line][column], Utils.TetrominoUtils.NoPiece);
                 }
             }
 
@@ -295,13 +349,14 @@ namespace Tetris.Controllers
                     gravityInterval = _levelController.DropSoftGravityInterval;
                 }
 
-                ClearTetromino(_currentTetromino, _ghostTetromino);
+                ClearTetromino(_ghostTetromino);
+                ClearTetromino(_currentTetromino);
 
                 if (_inputController.MoveLeft)
                 {
                     _currentTetromino.CurrentColumn -= 1;
 
-                    if (!ValidateTetrominoPosition(_currentTetromino))
+                    if (!CanPlaceTetromino(_currentTetromino))
                     {
                         // Disable previous move
                         _currentTetromino.CurrentColumn += 1;
@@ -311,7 +366,7 @@ namespace Tetris.Controllers
                 if (_inputController.MoveRight)
                 {
                     _currentTetromino.CurrentColumn += 1;
-                    if (!ValidateTetrominoPosition(_currentTetromino))
+                    if (!CanPlaceTetromino(_currentTetromino))
                     {
                         // Disable previous move
                         _currentTetromino.CurrentColumn -= 1;
@@ -321,7 +376,7 @@ namespace Tetris.Controllers
                 if (_inputController.RotateClockwise)
                 {
                     _currentTetromino.Rotation += 1;
-                    if (!ValidateTetrominoPosition(_currentTetromino))
+                    if (!CanPlaceTetromino(_currentTetromino))
                     {
                         // Disable previous rotation
                         _currentTetromino.Rotation -= 1;
@@ -332,49 +387,23 @@ namespace Tetris.Controllers
                 if (_inputController.RotateCounterClockwise)
                 {
                     _currentTetromino.Rotation -= 1;
-                    if (!ValidateTetrominoPosition(_currentTetromino))
+                    if (!CanPlaceTetromino(_currentTetromino))
                     {
                         // Disable previous rotation
                         _currentTetromino.Rotation += 1;
                     }
                 }
 
-                _ghostTetromino.Rotation = _currentTetromino.Rotation;
-                DrawTetromino(_currentTetromino, _ghostTetromino);
+                UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
+                DrawGhostTetromino(_ghostTetromino);
+                DrawTetromino(_currentTetromino);
 
                 yield return null;
             }
         }
 
-        private void ClearTetromino(ITetrominoModel tetromino, ITetrominoModel ghostTetromino = null)
+        private void ClearTetromino(ITetrominoModel tetromino)
         {
-            if (ghostTetromino != null)
-            {
-                for (int blockLine = 0; blockLine < ghostTetromino.NumLines; blockLine++)
-                {
-                    for (int blockColumn = 0; blockColumn < ghostTetromino.NumColumns; blockColumn++)
-                    {
-                        // Converts the block line and column to board line and column
-                        int boardLine = ghostTetromino.CurrentLine + blockLine;
-                        int boardColumn = ghostTetromino.CurrentColumn + blockColumn;
-
-                        if (boardLine >= 0 && boardLine < BoardModel.NumLines &&
-                            boardColumn >= 0 && boardColumn < BoardModel.NumColumns)
-                        {
-                            if (ghostTetromino.Blocks[blockLine, blockColumn] != Utils.TetrominoUtils.NoPiece)
-                            {
-                                BoardModel.Blocks[boardLine, boardColumn] = Utils.TetrominoUtils.NoPiece;
-                            }
-                        }
-                    }
-                }
-
-                // Update view after hiding tetromino
-                int ghostEndLine = ghostTetromino.CurrentLine + ghostTetromino.NumLines;
-                int ghostEndColumn = ghostTetromino.CurrentColumn + ghostTetromino.NumColumns;
-                BoardView.UpdateView(BoardModel, ghostTetromino.CurrentLine, ghostTetromino.CurrentColumn, ghostEndLine, ghostEndColumn, _blocks);
-            }
-
             for (int blockLine = 0; blockLine < tetromino.NumLines; blockLine++)
             {
                 for (int blockColumn = 0; blockColumn < tetromino.NumColumns; blockColumn++)
@@ -400,7 +429,7 @@ namespace Tetris.Controllers
             BoardView.UpdateView(BoardModel, tetromino.CurrentLine, tetromino.CurrentColumn, endLine, endColumn, _blocks);
         }
 
-        private bool ValidateTetrominoPosition(ITetrominoModel tetromino)
+        private bool CanPlaceTetromino(ITetrominoModel tetromino)
         {
             for (int blockLine = 0; blockLine < tetromino.NumLines; blockLine++)
             {
@@ -427,36 +456,8 @@ namespace Tetris.Controllers
             return true;
         }
 
-        private void DrawTetromino(ITetrominoModel tetromino, ITetrominoModel ghostTetromino = null)
+        private void DrawTetromino(ITetrominoModel tetromino)
         {
-            // Draw ghost tetromino
-            if (ghostTetromino != null)
-            {
-                for (int blockLine = 0; blockLine < ghostTetromino.NumLines; blockLine++)
-                {
-                    for (int blockColumn = 0; blockColumn < ghostTetromino.NumColumns; blockColumn++)
-                    {
-                        int blockType = ghostTetromino.Blocks[blockLine, blockColumn];
-                        if (blockType > Utils.TetrominoUtils.NoPiece)
-                        {
-                            // Converts the block line and column to board line and column
-                            int boardLine = ghostTetromino.CurrentLine + blockLine;
-                            int boardColumn = ghostTetromino.CurrentColumn + blockColumn;
-
-                            if (boardLine >= 0 && boardLine < BoardModel.NumLines && boardColumn >= 0 && boardColumn < BoardModel.NumColumns)
-                            {
-                                BoardModel.Blocks[boardLine, boardColumn] = Utils.TetrominoUtils.GhostPiece;
-                            }
-                        }
-                    }
-                }
-
-                // Update view after showing tetromino
-                int ghostEndLine = ghostTetromino.CurrentLine + ghostTetromino.NumLines;
-                int ghostEndColumn = ghostTetromino.CurrentColumn + ghostTetromino.NumColumns;
-                BoardView.UpdateView(BoardModel, ghostTetromino.CurrentLine, ghostTetromino.CurrentColumn, ghostEndLine, ghostEndColumn, _blocks);
-            }
-
             // Draw normal tetromino
             for (int blockLine = 0; blockLine < tetromino.NumLines; blockLine++)
             {
