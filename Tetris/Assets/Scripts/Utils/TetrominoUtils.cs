@@ -17,6 +17,13 @@ namespace Tetris.Utils
         public const int MaxNumLinesPreview = 2;
         public const int MaxNumColumnsPreview = 4;
 
+        private static readonly System.Random _random = new System.Random();
+
+        public static int GetRandomValue(int maxValue)
+        {
+            return _random.Next(maxValue);
+        }
+
         public static ITetrominoModel GetTetromino(int pieceType)
         {
             switch (pieceType)

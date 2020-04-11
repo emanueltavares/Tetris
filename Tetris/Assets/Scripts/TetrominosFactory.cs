@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Tetris.Models;
+using Tetris.Utils;
 using Tetris.Views;
 using UnityEngine;
 
@@ -26,7 +27,6 @@ namespace Tetris.Factories
         };
 
         // Private 
-        private System.Random _random = new System.Random();
         private IBoardFactory _boardFactory;
         private (IBoardModel, IBoardView)[] _nextPieces = new (IBoardModel, IBoardView)[0];
         private bool _initialized;
@@ -45,7 +45,7 @@ namespace Tetris.Factories
 
         private void Initialize()
         {
-            int pieceTypesIndex = _random.Next(PieceTypes.Count);
+            int pieceTypesIndex = TetrominoUtils.GetRandomValue(PieceTypes.Count);
             int randomPieceType = PieceTypes[pieceTypesIndex];
             NextPieceTypes.Add(randomPieceType);
 
@@ -56,7 +56,7 @@ namespace Tetris.Factories
                 List<int> pieceTypes = new List<int>(PieceTypes);
                 pieceTypes.Remove(randomPieceType);
 
-                pieceTypesIndex = _random.Next(pieceTypes.Count);
+                pieceTypesIndex = TetrominoUtils.GetRandomValue(pieceTypes.Count);
                 randomPieceType = pieceTypes[pieceTypesIndex];
                 NextPieceTypes.Add(randomPieceType);
             }
@@ -77,7 +77,7 @@ namespace Tetris.Factories
             // get next piece type
             List<int> pieceTypes = new List<int>(PieceTypes);
             pieceTypes.Remove(NextPieceTypes[NextPieceTypes.Count - 1]);
-            int nextPieceType = pieceTypes[_random.Next(pieceTypes.Count)];
+            int nextPieceType = pieceTypes[TetrominoUtils.GetRandomValue(pieceTypes.Count)];
 
             NextPieceTypes.RemoveAt(0);
             NextPieceTypes.Add(nextPieceType);

@@ -42,6 +42,7 @@ namespace Tetris.Controllers
             if (_boardController == null)
             {
                 _boardController = GetComponent<IBoardController>();
+                _boardController.Initialize();
             }
 
             HoldInputMaxTime = _levelController.GravityInterval / _boardController.BoardModel.NumColumns;

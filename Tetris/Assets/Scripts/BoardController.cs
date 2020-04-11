@@ -36,35 +36,46 @@ namespace Tetris.Controllers
         // Properties
         public IBoardModel BoardModel { get; private set; }
         public IBoardView BoardView { get; private set; }
+        public bool IsInitialized { get; private set; }
 
         protected virtual void OnEnable()
         {
-            // Initialize board model and board view
-            if (_boardFactory == null)
-            {
-                _boardFactory = GetComponent<IBoardFactory>();
-            }
-            (BoardModel, BoardView) = _boardFactory.GetBoard(_blockPrefab, _blocks, _blockScale, _blocksParent, _maxNumLines, _maxNumColumns);
-
-            // Initialized hold input max time
-            if (_inputController == null)
-            {
-                _inputController = GetComponent<IInputController>();
-            }
-
-            if (_levelController == null)
-            {
-                _levelController = GetComponent<ILevelController>();
-                _levelController.AddClearedLines(0);
-            }
-
-            if (_holdController == null)
-            {
-                _holdController = GetComponent<IHoldController>();
-            }
+            Initialize();
 
             // Start the game
             StartCoroutine(SpawnTetromino(false));
+        }
+
+        public void Initialize()
+        {
+            if (!IsInitialized)
+            {
+                // Initialize board model and board view
+                if (_boardFactory == null)
+                {
+                    _boardFactory = GetComponent<IBoardFactory>();
+                }
+                (BoardModel, BoardView) = _boardFactory.GetBoard(_blockPrefab, _blocks, _blockScale, _blocksParent, _maxNumLines, _maxNumColumns);
+
+                // Initialized hold input max time
+                if (_inputController == null)
+                {
+                    _inputController = GetComponent<IInputController>();
+                }
+
+                if (_levelController == null)
+                {
+                    _levelController = GetComponent<ILevelController>();
+                    _levelController.AddClearedLines(0);
+                }
+
+                if (_holdController == null)
+                {
+                    _holdController = GetComponent<IHoldController>();
+                }
+
+                IsInitialized = true;
+            }
         }
 
         private IEnumerator SpawnTetromino(bool useHoldPiece)
@@ -475,6 +486,8 @@ namespace Tetris.Controllers
 
     public interface IBoardController
     {
+        bool IsInitialized { get; }
+        void Initialize();
         IBoardModel BoardModel { get; }
         IBoardView BoardView { get; }
     }
