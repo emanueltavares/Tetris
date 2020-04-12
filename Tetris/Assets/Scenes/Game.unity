@@ -1301,7 +1301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _swapBoardTransform: {fileID: 1891754779}
-  _blocks: {fileID: 11400000, guid: 7925d8bef14987b4eaf46a4f1b989de5, type: 2}
+  _blocks: {fileID: 11400000, guid: df2114ecc0db19347ab72a577e4d2a5a, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
   _blockScale: 0.425
@@ -1323,7 +1323,7 @@ MonoBehaviour:
   - {fileID: 1224818027}
   - {fileID: 1962167949}
   - {fileID: 515147333}
-  _blocks: {fileID: 11400000, guid: 7925d8bef14987b4eaf46a4f1b989de5, type: 2}
+  _blocks: {fileID: 0}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
   _blockScale: 0.25
@@ -1375,7 +1375,7 @@ MonoBehaviour:
   _gameOverPanel: {fileID: 961807373}
   _clearLineAnimationTime: 0.5
   _clearLineMultiplier: 0.25
-  _blocks: {fileID: 11400000, guid: 7925d8bef14987b4eaf46a4f1b989de5, type: 2}
+  _blocks: {fileID: 11400000, guid: df2114ecc0db19347ab72a577e4d2a5a, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
   _blocksParent: {fileID: 417349039}
@@ -3512,7 +3512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319687958}
   m_Layer: 0
-  m_Name: Single Player
+  m_Name: Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

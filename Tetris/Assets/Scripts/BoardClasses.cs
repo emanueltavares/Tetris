@@ -39,7 +39,7 @@ namespace Tetris.Models
     {
         public Renderer[,] Blocks { get; private set; }
 
-        public void HideView(BlocksScriptableObject blocks)
+        public void HideView(Theme blocks)
         {
             int numLines = Blocks.GetLength(0);
             int numColumns = Blocks.GetLength(1);
@@ -55,7 +55,7 @@ namespace Tetris.Models
             }
         }
 
-        public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, BlocksScriptableObject blocks)
+        public void UpdateView(IBoardModel boardModel, int startLine, int startColumn, int endLine, int endColumn, Theme blocks)
         {
             for (int line = startLine; line < endLine; line++)
             {
@@ -70,7 +70,7 @@ namespace Tetris.Models
             }
         }
 
-        public void UpdateView(IBoardModel boardModel, BlocksScriptableObject blocks)
+        public void UpdateView(IBoardModel boardModel, Theme blocks)
         {
             for (int line = 0; line < boardModel.NumLines; line++)
             {
@@ -87,7 +87,7 @@ namespace Tetris.Models
 
         public class Builder
         {
-            public IBoardView Build(IBoardModel boardModel, Renderer blockPrefab, BlocksScriptableObject blocks, float blockScale, Transform parent)
+            public IBoardView Build(IBoardModel boardModel, Renderer blockPrefab, Theme blocks, float blockScale, Transform parent)
             {
                 Renderer[,] blockRenderers = new Renderer[boardModel.NumLines, boardModel.NumColumns];
 

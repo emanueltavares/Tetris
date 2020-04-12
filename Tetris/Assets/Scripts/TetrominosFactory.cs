@@ -10,7 +10,7 @@ namespace Tetris.Factories
     {        
         // Serialize Fields
         [SerializeField] private Transform[] _nextPiecesParents = new Transform[0];
-        [SerializeField] private BlocksScriptableObject _blocks;
+        [SerializeField] private Theme _blocks;
         [SerializeField] private Renderer _blockPrefab;
         [SerializeField] private float _blockScale = 1f;
 

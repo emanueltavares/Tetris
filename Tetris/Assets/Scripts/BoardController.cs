@@ -21,7 +21,7 @@ namespace Tetris.Controllers
         [Range(0f, 1f)] [SerializeField] private float _clearLineMultiplier = 0.125f;
 
         [Header("Block Creation")]
-        [SerializeField] private BlocksScriptableObject _blocks;
+        [SerializeField] private Theme _blocks;
         [SerializeField] private Renderer _blockPrefab;
         [SerializeField] private Transform _blocksParent;
         [SerializeField] private int _maxNumLines;                                              // max number of lines of our board

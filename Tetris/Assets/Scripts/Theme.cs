@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Tetris.Models
 {
-    [CreateAssetMenu(fileName = "Blocks Scriptable Object", menuName = "Scriptable Objects/Blocks Scriptable Object", order = -100)]
-    public class BlocksScriptableObject : ScriptableObject
+    [CreateAssetMenu(fileName = "Theme", menuName = "Scriptable Objects/Theme")]
+    public class Theme : ScriptableObject
     {
         // Serialized Fields
         [Header("Tetrominos Colors")]

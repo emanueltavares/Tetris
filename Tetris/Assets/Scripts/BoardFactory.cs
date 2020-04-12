@@ -6,7 +6,7 @@ namespace Tetris.Factories
 {
     public class BoardFactory : MonoBehaviour, IBoardFactory
     {
-        public (IBoardModel, IBoardView) GetBoard(Renderer blocksPrefab, BlocksScriptableObject blocks, float blockScale, Transform blocksParent, int numLines, int numColumns)
+        public (IBoardModel, IBoardView) GetBoard(Renderer blocksPrefab, Theme blocks, float blockScale, Transform blocksParent, int numLines, int numColumns)
         {
             // Create Builder
             BoardModel.Builder modelBuilder = new BoardModel.Builder();
