@@ -3,13 +3,13 @@ My own extreme version of Tetris
 
 ## Instructions
 
-- **Left Arrow/A** and **Right Arrow/D**  move the Tetromino
-- **Down Arrow/S** soft drops the Tetromino
-- **Up Arrow/W** soft drops the Tetromino
-- **Z/J** to rotate the Tetromino clockwise
-- **X/K** to rotate the Tetromino counter clockwise
-- **C/L** to hold the Tetromino
-- **Escape** to pause the game
+- Use **Left Arrow/A** and **Right Arrow/D** to move the Tetromino
+- Press **Down Arrow/S** to soft drop the Tetromino
+- Press **Up Arrow/W** to hard drop the Tetromino
+- **Z/J** rotates the Tetromino clockwise
+- **X/K** rotates the Tetromino counter clockwise
+- **C/L** holds the Tetromino
+- **Escape** pauses the game
 
 ## Credits
 Block art by Kenney:
