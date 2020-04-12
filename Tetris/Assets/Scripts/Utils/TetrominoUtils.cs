@@ -19,6 +19,7 @@ namespace Tetris.Utils
 
         public const string StartScene = "Start";
         public const string GameScene = "Game";
+        public const string CreditsScene = "Credits";
 
         private static readonly System.Random _random = new System.Random();
 

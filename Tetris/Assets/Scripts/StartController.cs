@@ -4,11 +4,16 @@ using UnityEngine.SceneManagement;
 
 namespace Tetris.Controllers
 {
-    public class PlayController : MonoBehaviour
+    public class StartController : MonoBehaviour
     {
         public void PlayGame()
         {
             SceneManager.LoadScene(TetrominoUtils.GameScene);
+        }
+
+        public void ShowCredits()
+        {
+            SceneManager.LoadScene(TetrominoUtils.CreditsScene);
         }
 
         public void QuitGame()
