@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tetris.Controllers
+namespace Tetris.Utils
 {
     public class ForceHighlight : MonoBehaviour
     {
