@@ -15,11 +15,11 @@ namespace Tetris.Controllers
 
         // Private Fields
         private float _holdInputStartTime = 0f;
+        private float _holdInputMaxTime = 0f;
         private ILevelController _levelController;
         private IBoardController _boardController;
 
         // Properties
-        public float HoldInputMaxTime { get; private set; }                                  // max time in milliseconds that you can hold the direction buttons before moving the tetromino again
         public bool MoveLeft { get; private set; }
         public bool MoveRight { get; private set; }
         public bool RotateClockwise { get; private set; }
@@ -28,7 +28,6 @@ namespace Tetris.Controllers
         public bool DropSoft { get; private set; }
         public bool HoldPiece { get; private set; }
         public bool Pause { get; private set; }
-        public bool AnyButtonDown { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -45,7 +44,7 @@ namespace Tetris.Controllers
                 _boardController.Initialize();
             }
 
-            HoldInputMaxTime = _levelController.GravityInterval / _boardController.BoardModel.NumColumns;
+            _holdInputMaxTime = _levelController.GravityInterval / _boardController.BoardModel.NumColumns;
         }
 
         protected virtual void Update()
@@ -56,7 +55,6 @@ namespace Tetris.Controllers
             DropHard = Input.GetButtonDown(_dropHardButtonName);
             HoldPiece = Input.GetButtonDown(_holdPieceButtonName);
             DropSoft = Input.GetButton(_dropSoftButtonName);
-            AnyButtonDown = Input.anyKeyDown;
 
             // Is holding left arrow key
             MoveLeft = false;
@@ -68,7 +66,7 @@ namespace Tetris.Controllers
                     MoveLeft = true;
                     _holdInputStartTime = Time.realtimeSinceStartup;
                 }
-                else if (_holdInputStartTime + HoldInputMaxTime < Time.realtimeSinceStartup)
+                else if (_holdInputStartTime + _holdInputMaxTime < Time.realtimeSinceStartup)
                 {
                     _holdInputStartTime = Time.realtimeSinceStartup;
                     MoveLeft = true;
@@ -85,26 +83,12 @@ namespace Tetris.Controllers
                     MoveRight = true;
                     _holdInputStartTime = Time.realtimeSinceStartup;
                 }
-                else if (_holdInputStartTime + HoldInputMaxTime < Time.realtimeSinceStartup)
+                else if (_holdInputStartTime + _holdInputMaxTime < Time.realtimeSinceStartup)
                 {
                     _holdInputStartTime = Time.realtimeSinceStartup;
                     MoveRight = true;
                 }
             }
         }
-    }
-
-    public interface IInputController
-    {
-        float HoldInputMaxTime { get; }
-        bool Pause { get; }
-        bool MoveLeft { get; }
-        bool MoveRight { get; }
-        bool RotateCounterClockwise { get; }
-        bool RotateClockwise { get; }
-        bool DropHard { get; }
-        bool DropSoft { get; }
-        bool HoldPiece { get; }
-        bool AnyButtonDown { get; }
     }
 }

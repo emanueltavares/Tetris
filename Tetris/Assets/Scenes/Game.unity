@@ -1243,11 +1243,11 @@ GameObject:
   - component: {fileID: 417349039}
   - component: {fileID: 417349045}
   - component: {fileID: 417349044}
-  - component: {fileID: 417349043}
   - component: {fileID: 417349042}
   - component: {fileID: 417349041}
   - component: {fileID: 417349040}
   - component: {fileID: 417349046}
+  - component: {fileID: 417349043}
   m_Layer: 0
   m_Name: Board Controller
   m_TagString: Untagged
@@ -1336,17 +1336,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 417349038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444f24cf9949da4458d1236775b19ad1, type: 3}
+  m_Script: {fileID: 11500000, guid: f54426d25844d764baa4dc57bd520f01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pauseButtonName: Cancel
-  _leftButtonName: Left
-  _rightButtonName: Right
-  _rotateClockwiseButtonName: RotateClockwise
-  _rotateCounterClockwiseButtonName: RotateCounterClockwise
-  _dropHardButtonName: DropHard
-  _dropSoftButtonName: DropSoft
-  _holdPieceButtonName: Hold
+  _mainCamera: {fileID: 892729377}
+  _minHorizontalDragDelta: 0.025
+  _minVerticalDragDelta: 0.025
+  _holdMinTime: 0.115
+  _dropHardMaxTime: 0.5
 --- !u!114 &417349044
 MonoBehaviour:
   m_ObjectHideFlags: 0
