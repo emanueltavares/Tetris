@@ -1310,7 +1310,7 @@ MonoBehaviour:
   _holdCollider: {fileID: 132011900}
   _minHorizontalDragDelta: 0.05
   _minVerticalDragDelta: 0.025
-  _holdMinTime: 0.2
+  _holdMinTime: 0.15
   _dropHardMaxTime: 0.5
 --- !u!114 &417349044
 MonoBehaviour:

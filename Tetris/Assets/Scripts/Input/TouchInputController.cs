@@ -19,6 +19,7 @@ namespace Application.Controllers
         private float _lastDragInputY;
         private float? _touchStartTime = 0f;
         private bool _applicationLostFocus = false;
+        private bool _hasMovedTetromino = false;
 
         // Properties
         public bool MoveLeft { get; private set; }
@@ -65,26 +66,17 @@ namespace Application.Controllers
                 if (Input.GetMouseButtonDown(0))
                 {
                     _touchStartTime = Time.realtimeSinceStartup;
+                    _hasMovedTetromino = false;
+
                     OnBeginTouch();
                 }
-                else if (Input.GetMouseButton(0))
+                else if (Input.GetMouseButton(0) && _touchStartTime.HasValue)
                 {
-                    if (_touchStartTime.HasValue) 
-                    {
-                        float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
-                        OnTouch(elapsedTime);
-                    }
+                    OnTouch();
                 }
-                else if (Input.GetMouseButtonUp(0))
+                else if (Input.GetMouseButtonUp(0) && _touchStartTime.HasValue)
                 {
-                    if (_touchStartTime.HasValue)
-                    {
-                        float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
-
-                        OnEndTouch(elapsedTime);
-
-                        _touchStartTime = null;
-                    }
+                    OnEndTouch();
                 }
             }            
         }
@@ -97,31 +89,23 @@ namespace Application.Controllers
             DropSoft = false;
         }
 
-        private void OnTouch(float touchElapsedTime)
-        {            
-            if (touchElapsedTime > _holdMinTime)
-            {
-                Vector3 inputPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-                float horDragDelta = inputPosition.x - _lastDragInputX;
-                float verDragDelta = inputPosition.y - _lastDragInputY;
-                bool canDropHard = false;
+        private void OnTouch()
+        {
+            Vector3 inputPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
+            float horDragDelta = inputPosition.x - _lastDragInputX;
+            float verDragDelta = inputPosition.y - _lastDragInputY;
 
+            if (!DropSoft)
+            {
                 // Check Drop Soft
-                if (!DropSoft)
+                if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
                 {
-                    if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
-                    {
-                        canDropHard = touchElapsedTime <= _dropHardMaxTime;
-                        if (!canDropHard)
-                        {
-                            DropSoft = true;
-                            _lastDragInputY = inputPosition.y;
-                        }
-                    }
+                    DropSoft = true;
+                    _lastDragInputY = inputPosition.y;
                 }
 
                 // Check Move Right and Left
-                if (!canDropHard && Mathf.Abs(horDragDelta) > _minHorizontalDragDelta)
+                if (Mathf.Abs(horDragDelta) > _minHorizontalDragDelta)
                 {
                     if (horDragDelta > 0)
                     {
@@ -134,15 +118,16 @@ namespace Application.Controllers
 
                     _lastDragInputX = inputPosition.x;
                 }
+            }            
 
-                Debug.LogFormat("Horizontal Drag Delta: [{0}] - Vertical Drag Delta: [{0}]", horDragDelta, verDragDelta);
-            }
+            Debug.LogFormat("Horizontal Drag Delta: [{0}] - Vertical Drag Delta: [{0}]", horDragDelta, verDragDelta);
         }
 
-        private void OnEndTouch(float touchElapsedTime)
+        private void OnEndTouch()
         {
+            float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
             Vector3 inputViewportPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            if (touchElapsedTime <= _holdMinTime)
+            if (elapsedTime <= _holdMinTime)
             {
                 // Check hold
                 Vector3 inputWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -167,16 +152,8 @@ namespace Application.Controllers
                 }
 
             }
-            else if (!DropSoft) // Check Drop Hard
-            {
-                float verDragDelta = inputViewportPosition.y - _lastDragInputY;
-                if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta && touchElapsedTime <= _dropHardMaxTime)
-                {
-                    DropHard = true;
-                }
-            }
 
-
+            _touchStartTime = null;
             DropSoft = false;
         }
     }
