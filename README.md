@@ -18,14 +18,14 @@ https://kenney.nl/assets/puzzle-pack-2
 **Clear Line SFX by Bertrof:**  
 https://freesound.org/people/Bertrof/sounds/131659/
 
-**Move Tetromino SFX by NenadSimic:**  
-https://freesound.org/people/NenadSimic/sounds/171697/
+**Move Tetromino SFX by GameAudio:**  
+https://freesound.org/people/GameAudio/sounds/220197/
 
 **Place Tetromino SFX by Bertrof:**  
 https://freesound.org/people/Bertrof/sounds/131660/
 
-**Rotate Tetromino SFX by Bertrof:**  
-https://freesound.org/people/Bertrof/sounds/131657/
+**Rotate Tetromino SFX by GameAudio:**  
+https://freesound.org/people/GameAudio/sounds/220194/
 
-**Background Music by BoxCat Games:**  
-https://freemusicarchive.org/music/BoxCat_Games/Nameless_the_Hackers_RPG_Soundtrack/BoxCat_Games_-_Nameless-_the_Hackers_RPG_Soundtrack_-_08_CPU_Talk
+**Background Music by SPENCE:**  
+https://www.youtube.com/channel/UCzKV4AGJbjatioXorSn-sGA
