@@ -6,6 +6,7 @@ namespace Application.Controllers
     {
         // Serialize Fields
         [SerializeField] private Camera _mainCamera;
+        [SerializeField] private Collider2D _boardCollider;
         [SerializeField] private Collider2D _holdCollider;
         [SerializeField] private float _minHorizontalDragDelta;
         [SerializeField] private float _minVerticalDragDelta;
@@ -149,7 +150,7 @@ namespace Application.Controllers
                 {
                     HoldPiece = true;
                 }
-                else if (inputViewportPosition.x >= 0.1f && inputViewportPosition.x <= 0.9f)
+                else if (_boardCollider.OverlapPoint(inputWorldPosition))
                 {
                     if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
                     {

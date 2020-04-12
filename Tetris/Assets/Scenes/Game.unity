@@ -447,7 +447,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &149624133
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -455,7 +455,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &149624134
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &257956430
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -757,7 +757,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &257956431
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -954,7 +954,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &262068015
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -962,7 +962,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &262068016
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1306,6 +1306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCamera: {fileID: 892729377}
+  _boardCollider: {fileID: 1319687959}
   _holdCollider: {fileID: 132011900}
   _minHorizontalDragDelta: 0.05
   _minVerticalDragDelta: 0.025
@@ -1688,7 +1689,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &513174266
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1696,7 +1697,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &513174267
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3254,7 +3255,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &1185623221
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3262,7 +3263,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &1185623222
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3352,6 +3353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1319687958}
+  - component: {fileID: 1319687959}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -3377,6 +3379,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1319687959
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319687957}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.85, y: 9}
+  m_EdgeRadius: 0
 --- !u!1 &1438241063
 GameObject:
   m_ObjectHideFlags: 0
@@ -3529,7 +3557,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &1438241066
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3537,7 +3565,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &1438241067
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4293,7 +4321,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &1655534132
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4301,7 +4329,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &1655534133
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5159,7 +5187,7 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!222 &1863912630
 CanvasRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5167,7 +5195,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 0
 --- !u!33 &1863912631
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
