@@ -54,7 +54,8 @@ namespace Application.Controllers
             DropHard = false;
             RotateClockwise = false;
             RotateCounterClockwise = false;
-            
+            DropHard = false;
+
             // Reset Application Lost Focus
             Pause = _applicationLostFocus;
             _applicationLostFocus = false;
@@ -137,14 +138,21 @@ namespace Application.Controllers
                 }
                 else if (_boardCollider.OverlapPoint(inputWorldPosition))
                 {
-                    if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
+                    if (DropSoft)
                     {
-                        RotateClockwise = true;
+                        DropHard = true;
                     }
-                    else // Check Rotate Counter Clockwise
+                    else
                     {
-                        RotateCounterClockwise = true;
-                    }
+                        if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
+                        {
+                            RotateClockwise = true;
+                        }
+                        else // Check Rotate Counter Clockwise
+                        {
+                            RotateCounterClockwise = true;
+                        }
+                    }                    
                 }
                 else
                 {
