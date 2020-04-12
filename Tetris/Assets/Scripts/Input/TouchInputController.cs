@@ -96,68 +96,72 @@ namespace Application.Controllers
             float horDragDelta = inputPosition.x - _lastDragInputX;
             float verDragDelta = inputPosition.y - _lastDragInputY;
 
-            // Check Drop Soft
-            if (!DropSoft && verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
-            {
-                DropSoft = true;
-                _lastDragInputY = inputPosition.y;
-            }
-
             // Check Move Right and Left
             if (!DropSoft && Mathf.Abs(horDragDelta) > _minHorizontalDragDelta)
             {
                 if (horDragDelta > 0)
                 {
                     MoveRight = true;
+                    _hasMovedTetromino = true;
                 }
                 else
                 {
                     MoveLeft = true;
+                    _hasMovedTetromino = true;
                 }
 
                 _lastDragInputX = inputPosition.x;
             }
+            // Check Drop Soft
+            else if (!DropSoft && verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
+            {
+                DropSoft = true;
+                _lastDragInputY = inputPosition.y;
+            }            
 
             Debug.LogFormat("Horizontal Drag Delta: [{0}] - Vertical Drag Delta: [{0}]", horDragDelta, verDragDelta);
         }
 
         private void OnEndTouch()
         {
-            float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
-            Vector3 inputViewportPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            if (elapsedTime <= _holdMinTime)
+            if (!_hasMovedTetromino)
             {
-                // Check hold
-                Vector3 inputWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                if (_holdCollider.OverlapPoint(inputWorldPosition))
+                float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
+                Vector3 inputViewportPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
+                if (elapsedTime <= _holdMinTime)
                 {
-                    HoldPiece = true;
-                }
-                else if (_boardCollider.OverlapPoint(inputWorldPosition))
-                {
-                    if (DropSoft)
+                    // Check hold
+                    Vector3 inputWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                    if (_holdCollider.OverlapPoint(inputWorldPosition))
                     {
-                        DropHard = true;
+                        HoldPiece = true;
+                    }
+                    else if (_boardCollider.OverlapPoint(inputWorldPosition))
+                    {
+                        if (DropSoft)
+                        {
+                            DropHard = true;
+                        }
+                        else
+                        {
+                            if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
+                            {
+                                RotateClockwise = true;
+                            }
+                            else // Check Rotate Counter Clockwise
+                            {
+                                RotateCounterClockwise = true;
+                            }
+                        }
                     }
                     else
                     {
-                        if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
-                        {
-                            RotateClockwise = true;
-                        }
-                        else // Check Rotate Counter Clockwise
-                        {
-                            RotateCounterClockwise = true;
-                        }
+                        Pause = true;
                     }
                 }
-                else
-                {
-                    Pause = true;
-                }
-
             }
 
+            _hasMovedTetromino = false;
             _touchStartTime = null;
             DropSoft = false;
         }

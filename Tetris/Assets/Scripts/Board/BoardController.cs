@@ -340,7 +340,7 @@ namespace Application.Controllers
                     {
                         if (blink)
                         {
-                            BoardView.Blocks[line, column].sharedMaterial = _blocks.Gray;
+                            BoardView.Blocks[line, column].sharedMaterial = _blocks.Ghost;
                         }
                         else
                         {

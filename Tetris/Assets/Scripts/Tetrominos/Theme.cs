@@ -17,19 +17,10 @@ namespace Application.Models
         [SerializeField] private Material _green;                                                  // GREEN is the color of the S piece
         [SerializeField] private Material _purple;                                                 // PURPLE is the color of the T piece
         [SerializeField] private Material _red;                                                    // RED is the color of the Z piece
-        [SerializeField] private Material _gray;
 
         // Properties
         public Material Background { get => _background; set => _background = value; }
-        //public Material LightBlue { get => _lightBlue; set => _lightBlue = value; }
-        //public Material DarkBlue { get => _darkBlue; set => _darkBlue = value; }
-        //public Material Orange { get => _orange; set => _orange = value; }
-        //public Material Yellow { get => _yellow; set => _yellow = value; }
-        //public Material Green { get => _green; set => _green = value; }
-        //public Material Purple { get => _purple; set => _purple = value; }
-        //public Material Red { get => _red; set => _red = value; }
-        public Material Gray { get => _gray; set => _gray = value; }
-        //public Material Ghost { get => _ghost; set => _ghost = value; }
+        public Material Ghost { get => _ghost; set => _ghost = value; }
 
         public Material GetMaterial(int pieceType)
         {
