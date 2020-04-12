@@ -364,19 +364,10 @@ namespace Tetris.Controllers
             {
                 if (_inputController.Pause)
                 {
-                    if (!IsPaused)
-                    {
-                        ClearTetromino(_ghostTetromino);
-                        ClearTetromino(_currentTetromino);
-                        BoardView.HideView(_blocks);
-                    }
-                    else
-                    {
-                        BoardView.UpdateView(BoardModel, _blocks);
-                    }
+                    BoardView.UpdateView(BoardModel, _blocks);
 
-                    IsPaused = !IsPaused;
-                    _pausePanel.SetActive(IsPaused);
+                    IsPaused = true;
+                    _pausePanel.SetActive(true);
                 }
 
                 if (!IsPaused)

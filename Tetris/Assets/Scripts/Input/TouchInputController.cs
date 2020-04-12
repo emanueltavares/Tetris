@@ -17,6 +17,7 @@ namespace Tetris.Controllers
         private float _lastDragInputX;
         private float _lastDragInputY;
         private float? _touchStartTime = 0f;
+        private bool _applicationLostFocus = false;
 
         // Properties
         public bool MoveLeft { get; private set; }
@@ -36,6 +37,14 @@ namespace Tetris.Controllers
             }
         }
 
+        protected virtual void OnApplicationFocus(bool focus)
+        {
+            if (!focus)
+            {
+                _applicationLostFocus = true;
+            }
+        }
+
         protected virtual void Update()
         {
             MoveLeft = false;
@@ -43,7 +52,11 @@ namespace Tetris.Controllers
             DropHard = false;
             RotateClockwise = false;
             RotateCounterClockwise = false;
-            Pause = false;
+            
+            // Reset Application Lost Focus
+            Pause = _applicationLostFocus;
+            _applicationLostFocus = false;
+            
             HoldPiece = false;
 
             if (!_boardController.IsPaused)
