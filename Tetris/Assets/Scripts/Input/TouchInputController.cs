@@ -59,7 +59,7 @@ namespace Application.Controllers
             // Reset Application Lost Focus
             Pause = _applicationLostFocus;
             _applicationLostFocus = false;
-            
+
             HoldPiece = false;
 
             if (!_boardController.IsPaused)
@@ -79,7 +79,7 @@ namespace Application.Controllers
                 {
                     OnEndTouch();
                 }
-            }            
+            }
         }
 
         private void OnBeginTouch()
@@ -96,30 +96,27 @@ namespace Application.Controllers
             float horDragDelta = inputPosition.x - _lastDragInputX;
             float verDragDelta = inputPosition.y - _lastDragInputY;
 
-            if (!DropSoft)
+            // Check Drop Soft
+            if (!DropSoft && verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
             {
-                // Check Drop Soft
-                if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
+                DropSoft = true;
+                _lastDragInputY = inputPosition.y;
+            }
+
+            // Check Move Right and Left
+            if (!DropSoft && Mathf.Abs(horDragDelta) > _minHorizontalDragDelta)
+            {
+                if (horDragDelta > 0)
                 {
-                    DropSoft = true;
-                    _lastDragInputY = inputPosition.y;
+                    MoveRight = true;
+                }
+                else
+                {
+                    MoveLeft = true;
                 }
 
-                // Check Move Right and Left
-                if (Mathf.Abs(horDragDelta) > _minHorizontalDragDelta)
-                {
-                    if (horDragDelta > 0)
-                    {
-                        MoveRight = true;
-                    }
-                    else
-                    {
-                        MoveLeft = true;
-                    }
-
-                    _lastDragInputX = inputPosition.x;
-                }
-            }            
+                _lastDragInputX = inputPosition.x;
+            }
 
             Debug.LogFormat("Horizontal Drag Delta: [{0}] - Vertical Drag Delta: [{0}]", horDragDelta, verDragDelta);
         }
@@ -152,7 +149,7 @@ namespace Application.Controllers
                         {
                             RotateCounterClockwise = true;
                         }
-                    }                    
+                    }
                 }
                 else
                 {
