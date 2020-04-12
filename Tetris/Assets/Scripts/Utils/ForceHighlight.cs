@@ -9,6 +9,7 @@ namespace Tetris.Utils
         [SerializeField] private GameObject _firstSelected;
         [SerializeField] private EventSystem _eventSystem;
 
+#if UNITY_STANDALONE
         protected virtual void OnEnable()
         {
             StartCoroutine(OnEnableCoroutine());
@@ -22,5 +23,6 @@ namespace Tetris.Utils
             _eventSystem.SetSelectedGameObject(null);
             _eventSystem.SetSelectedGameObject(_firstSelected);
         }
+#endif
     }
 }

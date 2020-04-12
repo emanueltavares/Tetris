@@ -50,10 +50,10 @@ namespace Tetris.Controllers
         protected virtual void Update()
         {
             Pause = Input.GetButtonDown(_pauseButtonName);
+            HoldPiece = Input.GetButtonDown(_holdPieceButtonName);
             RotateClockwise = Input.GetButtonDown(_rotateClockwiseButtonName);
             RotateCounterClockwise = Input.GetButtonDown(_rotateCounterClockwiseButtonName);
             DropHard = Input.GetButtonDown(_dropHardButtonName);
-            HoldPiece = Input.GetButtonDown(_holdPieceButtonName);
             DropSoft = Input.GetButton(_dropSoftButtonName);
 
             // Is holding left arrow key

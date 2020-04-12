@@ -34,6 +34,9 @@ namespace Tetris.Controllers
             RotateClockwise = false;
             RotateCounterClockwise = false;
 
+            Pause = Input.GetButtonDown("Cancel");
+            HoldPiece = Input.GetButtonDown("Hold");
+
             if (Input.GetMouseButtonDown(0))
             {
                 OnBeginTouch();
