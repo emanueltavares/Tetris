@@ -117,9 +117,7 @@ namespace Application.Controllers
             {
                 DropSoft = true;
                 _lastDragInputY = inputPosition.y;
-            }            
-
-            Debug.LogFormat("Horizontal Drag Delta: [{0}] - Vertical Drag Delta: [{0}]", horDragDelta, verDragDelta);
+            }
         }
 
         private void OnEndTouch()
@@ -146,11 +144,11 @@ namespace Application.Controllers
                         {
                             if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
                             {
-                                RotateClockwise = true;
+                                RotateCounterClockwise = true;
                             }
                             else // Check Rotate Counter Clockwise
                             {
-                                RotateCounterClockwise = true;
+                                RotateClockwise = true;
                             }
                         }
                     }
