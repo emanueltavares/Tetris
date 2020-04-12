@@ -1323,7 +1323,7 @@ MonoBehaviour:
   - {fileID: 1224818027}
   - {fileID: 1962167949}
   - {fileID: 515147333}
-  _blocks: {fileID: 0}
+  _blocks: {fileID: 11400000, guid: df2114ecc0db19347ab72a577e4d2a5a, type: 2}
   _blockPrefab: {fileID: 5976157753099036920, guid: 16efbf551993ecd4b8fb50b4d73d5390,
     type: 3}
   _blockScale: 0.25
