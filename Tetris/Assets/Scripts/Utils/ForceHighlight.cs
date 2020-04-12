@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Tetris.Utils
@@ -15,7 +14,7 @@ namespace Tetris.Utils
             StartCoroutine(OnEnableCoroutine());
         }
 
-        private IEnumerator OnEnableCoroutine()
+        private System.Collections.IEnumerator OnEnableCoroutine()
         {
             // Button select does not highlight: https://answers.unity.com/questions/1142958/buttonselect-doesnt-highlight.html
             yield return null;

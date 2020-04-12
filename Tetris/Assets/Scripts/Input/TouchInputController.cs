@@ -6,15 +6,17 @@ namespace Tetris.Controllers
     {
         // Serialize Fields
         [SerializeField] private Camera _mainCamera;
-        [Range(0f, 0.1f)] [SerializeField] private float _minHorizontalDragDelta;
-        [Range(0f, 0.1f)] [SerializeField] private float _minVerticalDragDelta;
+        [SerializeField] private Collider2D _holdCollider;
+        [SerializeField] private float _minHorizontalDragDelta;
+        [SerializeField] private float _minVerticalDragDelta;
         [SerializeField] private float _holdMinTime = 0.15f;
         [SerializeField] private float _dropHardMaxTime = 0.5f;
 
         // Private
+        private IBoardController _boardController;
         private float _lastDragInputX;
         private float _lastDragInputY;
-        private float _touchStartTime = 0f;
+        private float? _touchStartTime = 0f;
 
         // Properties
         public bool MoveLeft { get; private set; }
@@ -26,6 +28,14 @@ namespace Tetris.Controllers
         public bool HoldPiece { get; private set; }
         public bool Pause { get; private set; }
 
+        protected virtual void OnEnable()
+        {
+            if (_boardController == null)
+            {
+                _boardController = GetComponent<IBoardController>();
+            }
+        }
+
         protected virtual void Update()
         {
             MoveLeft = false;
@@ -33,22 +43,36 @@ namespace Tetris.Controllers
             DropHard = false;
             RotateClockwise = false;
             RotateCounterClockwise = false;
+            Pause = false;
+            HoldPiece = false;
 
-            Pause = Input.GetButtonDown("Cancel");
-            HoldPiece = Input.GetButtonDown("Hold");
+            if (!_boardController.IsPaused)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _touchStartTime = Time.realtimeSinceStartup;
+                    OnBeginTouch();
+                }
+                else if (Input.GetMouseButton(0))
+                {
+                    if (_touchStartTime.HasValue) 
+                    {
+                        float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
+                        OnTouch(elapsedTime);
+                    }
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    if (_touchStartTime.HasValue)
+                    {
+                        float elapsedTime = Time.realtimeSinceStartup - _touchStartTime.Value;
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                OnBeginTouch();
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                OnTouch();
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                OnEndTouch();
-            }
+                        OnEndTouch(elapsedTime);
+
+                        _touchStartTime = null;
+                    }
+                }
+            }            
         }
 
         private void OnBeginTouch()
@@ -56,14 +80,12 @@ namespace Tetris.Controllers
             Vector3 inputPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
             _lastDragInputX = inputPosition.x;
             _lastDragInputY = inputPosition.y;
-            _touchStartTime = Time.realtimeSinceStartup;
             DropSoft = false;
         }
 
-        private void OnTouch()
-        {
-            float elapsedTime = Time.realtimeSinceStartup - _touchStartTime;
-            if (elapsedTime > _holdMinTime)
+        private void OnTouch(float touchElapsedTime)
+        {            
+            if (touchElapsedTime > _holdMinTime)
             {
                 Vector3 inputPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
                 float horDragDelta = inputPosition.x - _lastDragInputX;
@@ -75,7 +97,7 @@ namespace Tetris.Controllers
                 {
                     if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta)
                     {
-                        canDropHard = elapsedTime <= _dropHardMaxTime;
+                        canDropHard = touchElapsedTime <= _dropHardMaxTime;
                         if (!canDropHard)
                         {
                             DropSoft = true;
@@ -103,25 +125,38 @@ namespace Tetris.Controllers
             }
         }
 
-        private void OnEndTouch()
+        private void OnEndTouch(float touchElapsedTime)
         {
-            Vector3 inputPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
-            float elapsedTime = Time.realtimeSinceStartup - _touchStartTime;
-            if (elapsedTime <= _holdMinTime)
+            Vector3 inputViewportPosition = _mainCamera.ScreenToViewportPoint(Input.mousePosition);
+            if (touchElapsedTime <= _holdMinTime)
             {
-                if (inputPosition.x > 0.5f)
+                // Check hold
+                Vector3 inputWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                if (_holdCollider.OverlapPoint(inputWorldPosition))
                 {
-                    RotateClockwise = true;
+                    HoldPiece = true;
+                }
+                else if (inputViewportPosition.x >= 0.1f && inputViewportPosition.x <= 0.9f)
+                {
+                    if (inputViewportPosition.x > 0.5f) // Check Rotate Clockwise
+                    {
+                        RotateClockwise = true;
+                    }
+                    else // Check Rotate Counter Clockwise
+                    {
+                        RotateCounterClockwise = true;
+                    }
                 }
                 else
                 {
-                    RotateCounterClockwise = true;
+                    Pause = true;
                 }
+
             }
             else if (!DropSoft) // Check Drop Hard
             {
-                float verDragDelta = inputPosition.y - _lastDragInputY;
-                if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta && elapsedTime <= _dropHardMaxTime)
+                float verDragDelta = inputViewportPosition.y - _lastDragInputY;
+                if (verDragDelta < 0f && Mathf.Abs(verDragDelta) > _minVerticalDragDelta && touchElapsedTime <= _dropHardMaxTime)
                 {
                     DropHard = true;
                 }

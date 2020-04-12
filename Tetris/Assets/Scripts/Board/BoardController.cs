@@ -437,7 +437,7 @@ namespace Tetris.Controllers
                             // Disable previous rotation
                             _currentTetromino.Rotation -= 1;
                         }
-                        else
+                        else if (_currentTetromino.MaxRotations > 1)
                         {
                             _soundController.PlayRotateTetromino();
                         }
