@@ -1364,6 +1364,9 @@ MonoBehaviour:
   _placeTetrominoAudioSource: {fileID: 1453926160}
   _rotateTetrominoAudioSource: {fileID: 1143377095}
   _holdTetrominoAudioSource: {fileID: 524584042}
+  _bgMusicAudioSource: {fileID: 1171061158}
+  _bgMusicFastPitch: 1.15
+  _bgMusicDefaultPitch: 1
 --- !u!1 &443050124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,7 +1786,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4289d6746113d844d8d95942592da3e9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 756dc563b74ca4e448a274ddece5cdef, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.25
   m_Pitch: 1
@@ -2681,7 +2684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1143377094
 Transform:
   m_ObjectHideFlags: 0
@@ -3017,7 +3020,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b9e1c7efbbd530b41b1f3bf3c79a3d55, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1e222d35fd975ea449343cf05be06a81, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4695,7 +4698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1793162816
 Transform:
   m_ObjectHideFlags: 0

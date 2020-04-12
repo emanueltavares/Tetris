@@ -240,6 +240,7 @@ namespace Application.Controllers
                         _currentTetromino.CurrentLine -= 1;
                         isTetrominoLocked = true;
                     }
+
                     UpdateGhostTetromino(_currentTetromino, _ghostTetromino);
                     DrawGhostTetromino(_ghostTetromino);
                     DrawTetromino(_currentTetromino);
@@ -262,9 +263,35 @@ namespace Application.Controllers
                     // Add a frame to refresh input
                     yield return null;
                 }
+
+                if (IsPlayerInDanger())
+                {
+                    _soundController.SetFastBgMusicPitch();
+                }
+                else
+                {
+                    _soundController.SetDefaultBgMusicPitch();
+                }
             }
 
             yield return StartCoroutine(SpawnTetromino(useHoldPiece));
+        }
+
+        private bool IsPlayerInDanger()
+        {
+            int dangerNumLines = Mathf.CeilToInt(_maxNumLines * 0.25f);
+            for (int line = 0; line < dangerNumLines; line++)
+            {
+                for (int column = 0; column < BoardModel.NumColumns; column++)
+                {
+                    if (BoardModel.Blocks[line, column] > TetrominoUtils.NoPiece)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private List<int> GetClearedLines()

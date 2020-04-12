@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Application.Controllers
 {
@@ -11,6 +9,9 @@ namespace Application.Controllers
         [SerializeField] private AudioSource _placeTetrominoAudioSource;
         [SerializeField] private AudioSource _rotateTetrominoAudioSource;
         [SerializeField] private AudioSource _holdTetrominoAudioSource;
+        [SerializeField] private AudioSource _bgMusicAudioSource;
+        [Range(-3f, 3f)] [SerializeField] private float _bgMusicFastPitch = 1.15f;
+        [Range(-3f, 3f)] [SerializeField] private float _bgMusicDefaultPitch = 1f;
 
         public void PlayClearLine()
         {
@@ -36,6 +37,16 @@ namespace Application.Controllers
         {
             _rotateTetrominoAudioSource.Play();
         }
+
+        public void SetFastBgMusicPitch()
+        {
+            _bgMusicAudioSource.pitch = _bgMusicFastPitch;
+        }
+
+        public void SetDefaultBgMusicPitch()
+        {
+            _bgMusicAudioSource.pitch = _bgMusicDefaultPitch;
+        }
     }
 
     public interface ISoundController
@@ -45,5 +56,7 @@ namespace Application.Controllers
         void PlayRotateTetromino();
         void PlayPlaceTetromino();
         void PlayHoldTetromino();
+        void SetFastBgMusicPitch();
+        void SetDefaultBgMusicPitch();
     }
 }
