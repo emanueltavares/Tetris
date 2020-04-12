@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tetris.Utils
+namespace Application.Utils
 {
     public class DisableOnPlay : MonoBehaviour
     {

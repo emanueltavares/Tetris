@@ -1,6 +1,6 @@
-﻿using Tetris.Models;
+﻿using Application.Models;
 
-namespace Tetris.Utils
+namespace Application.Utils
 {
     public static class TetrominoUtils
     {

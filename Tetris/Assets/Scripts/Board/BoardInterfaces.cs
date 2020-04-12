@@ -1,8 +1,8 @@
-﻿using Tetris.Models;
-using Tetris.Views;
+﻿using Application.Models;
+using Application.Views;
 using UnityEngine;
 
-namespace Tetris.Models
+namespace Application.Models
 {
     public interface IBoardModel
     {
@@ -12,7 +12,7 @@ namespace Tetris.Models
     }    
 }
 
-namespace Tetris.Views
+namespace Application.Views
 {
     public interface IBoardView
     {
@@ -23,7 +23,7 @@ namespace Tetris.Views
     }
 }
 
-namespace Tetris.Factories
+namespace Application.Factories
 {
     public interface IBoardFactory
     {

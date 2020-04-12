@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tetris.Controllers
+namespace Application.Controllers
 {
     public class SoundController : MonoBehaviour, ISoundController
     {

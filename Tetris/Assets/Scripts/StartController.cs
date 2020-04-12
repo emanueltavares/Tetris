@@ -1,8 +1,8 @@
-﻿using Tetris.Utils;
+﻿using Application.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Tetris.Controllers
+namespace Application.Controllers
 {
     public class StartController : MonoBehaviour
     {
@@ -18,7 +18,7 @@ namespace Tetris.Controllers
 
         public void QuitGame()
         {
-            Application.Quit();
+            UnityEngine.Application.Quit();
         }
     }
 

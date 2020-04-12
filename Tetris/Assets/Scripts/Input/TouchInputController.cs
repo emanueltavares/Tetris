@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tetris.Controllers
+namespace Application.Controllers
 {
     public class TouchInputController : MonoBehaviour, IInputController
     {

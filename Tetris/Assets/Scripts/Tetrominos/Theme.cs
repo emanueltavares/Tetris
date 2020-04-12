@@ -1,7 +1,7 @@
-﻿using Tetris.Utils;
+﻿using Application.Utils;
 using UnityEngine;
 
-namespace Tetris.Models
+namespace Application.Models
 {
     [CreateAssetMenu(fileName = "Theme", menuName = "Scriptable Objects/Theme")]
     public class Theme : ScriptableObject

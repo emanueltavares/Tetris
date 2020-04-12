@@ -1,8 +1,8 @@
-﻿using Tetris.Models;
-using Tetris.Views;
+﻿using Application.Models;
+using Application.Views;
 using UnityEngine;
 
-namespace Tetris.Factories
+namespace Application.Factories
 {
     public class BoardFactory : MonoBehaviour, IBoardFactory
     {

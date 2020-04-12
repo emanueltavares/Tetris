@@ -1,4 +1,4 @@
-﻿namespace Tetris.Models
+﻿namespace Application.Models
 {
     public class LetterJTetrominoModel : ITetrominoModel
     {

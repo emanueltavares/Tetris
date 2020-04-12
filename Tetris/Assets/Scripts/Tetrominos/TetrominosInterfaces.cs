@@ -1,4 +1,4 @@
-﻿namespace Tetris.Models
+﻿namespace Application.Models
 {
     public interface ITetrominoModel
     {

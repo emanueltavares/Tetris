@@ -1,10 +1,10 @@
-﻿using Tetris.Factories;
-using Tetris.Models;
-using Tetris.Utils;
-using Tetris.Views;
+﻿using Application.Factories;
+using Application.Models;
+using Application.Utils;
+using Application.Views;
 using UnityEngine;
 
-namespace Tetris.Controllers
+namespace Application.Controllers
 {
     public class HoldPieceController : MonoBehaviour, IHoldController
     {

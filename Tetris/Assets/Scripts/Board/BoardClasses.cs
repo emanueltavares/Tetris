@@ -1,8 +1,8 @@
-﻿using Tetris.Utils;
-using Tetris.Views;
+﻿using Application.Utils;
+using Application.Views;
 using UnityEngine;
 
-namespace Tetris.Models
+namespace Application.Models
 {
     public class BoardModel : IBoardModel
     {

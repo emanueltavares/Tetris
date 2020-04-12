@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Tetris.Factories;
-using Tetris.Models;
-using Tetris.Utils;
-using Tetris.Views;
+using Application.Factories;
+using Application.Models;
+using Application.Utils;
+using Application.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Tetris.Controllers
+namespace Application.Controllers
 {
     public partial class BoardController : MonoBehaviour, IBoardController
     {

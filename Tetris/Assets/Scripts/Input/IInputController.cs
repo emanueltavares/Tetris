@@ -1,4 +1,4 @@
-﻿namespace Tetris.Controllers
+﻿namespace Application.Controllers
 {
     public interface IInputController
     {

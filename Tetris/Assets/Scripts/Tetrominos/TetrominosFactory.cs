@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Tetris.Controllers;
-using Tetris.Models;
-using Tetris.Views;
+using Application.Controllers;
+using Application.Models;
+using Application.Views;
 using UnityEngine;
 
-namespace Tetris.Factories
+namespace Application.Factories
 {
     public class TetrominosFactory : MonoBehaviour, ITetrominosFactory
     {        
