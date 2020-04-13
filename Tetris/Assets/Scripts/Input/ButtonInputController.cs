@@ -2,7 +2,7 @@
 
 namespace Application.Controllers
 {
-    public class InputController : MonoBehaviour, IInputController
+    public class ButtonInputController : MonoBehaviour, IInputController
     {
         [SerializeField] private string _pauseButtonName;
         [SerializeField] private string _leftButtonName;
