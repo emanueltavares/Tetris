@@ -8,15 +8,15 @@ namespace Application.Models
     {
         // Serialized Fields
         [Header("Tetrominos Colors")]
-        [SerializeField] private Material _ghost;                                                  // GHOST is the color of the ghost block
-        [SerializeField] private Material _background;                                             // BACKGROUND is the color of the empty block
-        [SerializeField] private Material _lightBlue;                                              // LIGHT BLUE is the color of the I piece
-        [SerializeField] private Material _darkBlue;                                               // DARK BLUE is the color of the J piece
-        [SerializeField] private Material _orange;                                                 // ORANGE is the color of the L piece
-        [SerializeField] private Material _yellow;                                                 // YELLOW is the color of the O piece
-        [SerializeField] private Material _green;                                                  // GREEN is the color of the S piece
-        [SerializeField] private Material _purple;                                                 // PURPLE is the color of the T piece
-        [SerializeField] private Material _red;                                                    // RED is the color of the Z piece
+        [SerializeField] private Material _ghost;
+        [SerializeField] private Material _background;
+        [SerializeField] private Material _IPieceMaterial;
+        [SerializeField] private Material _JPieceMaterial;
+        [SerializeField] private Material _LPieceMaterial;
+        [SerializeField] private Material _SPieceMaterial;
+        [SerializeField] private Material _OPieceMaterial;
+        [SerializeField] private Material _TPieceMaterial;
+        [SerializeField] private Material _ZPieceMaterial;
 
         // Properties
         public Material Background { get => _background; set => _background = value; }
@@ -27,19 +27,19 @@ namespace Application.Models
             switch (pieceType)
             {
                 case TetrominoUtils.IPieceType:
-                    return _lightBlue;
+                    return _IPieceMaterial;
                 case TetrominoUtils.JPieceType:
-                    return _darkBlue;
+                    return _JPieceMaterial;
                 case TetrominoUtils.LPieceType:
-                    return _orange;
+                    return _LPieceMaterial;
                 case TetrominoUtils.SPieceType:
-                    return _yellow;
+                    return _SPieceMaterial;
                 case TetrominoUtils.OPieceType:
-                    return _green;
+                    return _OPieceMaterial;
                 case TetrominoUtils.TPieceType:
-                    return _purple;
+                    return _TPieceMaterial;
                 case TetrominoUtils.ZPieceType:
-                    return _red;
+                    return _ZPieceMaterial;
                 case TetrominoUtils.NoPiece:
                     return _background;
                 default:

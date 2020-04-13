@@ -14,11 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ghost: {fileID: 2100000, guid: d44bbb9f252c9834c844076fe0f9a691, type: 2}
   _background: {fileID: 2100000, guid: 9bfc4f6c187eae741a81daf2b99deb56, type: 2}
-  _lightBlue: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
-  _darkBlue: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
-  _orange: {fileID: 2100000, guid: e59918cc047cfe2468dabf4f8fecbeb5, type: 2}
-  _yellow: {fileID: 2100000, guid: 25ecc389e77b12048a6d4d523f9a61a7, type: 2}
-  _green: {fileID: 2100000, guid: e85889205a8d70c4eafdc19f97705813, type: 2}
-  _purple: {fileID: 2100000, guid: 82f124754ff55d54e8d318cb118e78b7, type: 2}
-  _red: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
-  _gray: {fileID: 2100000, guid: dd0780a4c6c34c54d8f759916c7b9bcb, type: 2}
+  _IPieceMaterial: {fileID: 2100000, guid: 82f124754ff55d54e8d318cb118e78b7, type: 2}
+  _JPieceMaterial: {fileID: 2100000, guid: 8e19dc38045ffc347b449aa76ea58775, type: 2}
+  _LPieceMaterial: {fileID: 2100000, guid: e59918cc047cfe2468dabf4f8fecbeb5, type: 2}
+  _SPieceMaterial: {fileID: 2100000, guid: f979fc869c2c32342ba736d4aeb49782, type: 2}
+  _OPieceMaterial: {fileID: 2100000, guid: 25ecc389e77b12048a6d4d523f9a61a7, type: 2}
+  _TPieceMaterial: {fileID: 2100000, guid: 08f55757cad84664ca2603a9d64ea8be, type: 2}
+  _ZPieceMaterial: {fileID: 2100000, guid: e85889205a8d70c4eafdc19f97705813, type: 2}
