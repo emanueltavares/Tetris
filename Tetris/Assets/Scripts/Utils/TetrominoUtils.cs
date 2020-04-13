@@ -22,10 +22,19 @@ namespace Application.Utils
         public const string CreditsScene = "Credits";
 
         private static readonly System.Random _random = new System.Random();
+        private static int _previousRandomValue = -1;
 
-        public static int GetRandomValue(int maxValue)
+        public static int GetRandomPiece(int maxValue)
         {
-            return _random.Next(maxValue);
+            int maxValuePlusOne = maxValue + 1;
+            int randomNumber = _random.Next(maxValuePlusOne);
+            if (randomNumber == maxValue || randomNumber == _previousRandomValue)
+            {
+                randomNumber = _random.Next(randomNumber);
+            }
+
+            _previousRandomValue = randomNumber;
+            return randomNumber;
         }
 
         public static ITetrominoModel GetTetromino(int pieceType)

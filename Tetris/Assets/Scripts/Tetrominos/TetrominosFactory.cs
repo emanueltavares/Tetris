@@ -77,7 +77,7 @@ namespace Application.Factories
 
         private void Initialize()
         {
-            int pieceTypesIndex = Utils.TetrominoUtils.GetRandomValue(PieceTypes.Count);
+            int pieceTypesIndex = Utils.TetrominoUtils.GetRandomPiece(PieceTypes.Count);
             int randomPieceType = PieceTypes[pieceTypesIndex];
             NextPieceTypes.Add(randomPieceType);
 
@@ -85,11 +85,8 @@ namespace Application.Factories
             for (int i = 1; i < _nextPiecesParents.Length; i++)
             {
                 // remove previous piece type
-                List<int> pieceTypes = new List<int>(PieceTypes);
-                pieceTypes.Remove(randomPieceType);
-
-                pieceTypesIndex = Utils.TetrominoUtils.GetRandomValue(pieceTypes.Count);
-                randomPieceType = pieceTypes[pieceTypesIndex];
+                pieceTypesIndex = Utils.TetrominoUtils.GetRandomPiece(PieceTypes.Count);
+                randomPieceType = PieceTypes[pieceTypesIndex];
                 NextPieceTypes.Add(randomPieceType);
             }
 
@@ -105,11 +102,10 @@ namespace Application.Factories
             }
 
             int pieceType = NextPieceTypes[0];
-            
-            // get next piece type
-            List<int> pieceTypes = new List<int>(PieceTypes);
-            pieceTypes.Remove(NextPieceTypes[NextPieceTypes.Count - 1]);
-            int nextPieceType = pieceTypes[Utils.TetrominoUtils.GetRandomValue(pieceTypes.Count)];
+
+            // add piece type to last
+            int nextPieceTypeIndex = Utils.TetrominoUtils.GetRandomPiece(PieceTypes.Count);
+            int nextPieceType = PieceTypes[nextPieceTypeIndex];
 
             NextPieceTypes.RemoveAt(0);
             NextPieceTypes.Add(nextPieceType);

@@ -279,7 +279,7 @@ namespace Application.Controllers
 
         private bool IsPlayerInDanger()
         {
-            int dangerNumLines = Mathf.CeilToInt(_maxNumLines * 0.25f);
+            int dangerNumLines = Mathf.CeilToInt(_maxNumLines * 0.35f);
             for (int line = 0; line < dangerNumLines; line++)
             {
                 for (int column = 0; column < BoardModel.NumColumns; column++)
