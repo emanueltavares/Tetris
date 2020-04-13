@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Application.Controllers
 {
-    public class HoldPieceController : MonoBehaviour, IHoldController
+    public class HoldTetrominoController : MonoBehaviour, IHoldController
     {
         // Serialize Fields
         [SerializeField] private Transform _swapBoardTransform;
